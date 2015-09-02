@@ -4,4 +4,9 @@
   <artifactId>multi-module</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-</project> 
+  <modules>
+  	<module>eitax-rest</module>
+  	<module>eitax-batch</module>
+  	<module>eitax-core</module>
+  </modules>
+</project>
