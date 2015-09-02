@@ -24,7 +24,7 @@ public class MarkRestController {
 	@Autowired
 	private YahooServiceFacade yahooServiceFacade;
 	
-	@RequestMapping(value="{yahooAuctionItemId}",method = RequestMethod.PUT,produces = "application/json")
+	@RequestMapping(value="{yahooAuctionItemId}",method = RequestMethod.POST,produces = "application/json")
 	public ResponseEntity<Result> putMark(@PathVariable Integer yahooAuctionItemId, @RequestParam Integer markId,UriComponentsBuilder uriComponentsBuilder) {
 		System.out.println(yahooAuctionItemId);
 		log.info(yahooAuctionItemId.toString());
@@ -32,7 +32,10 @@ public class MarkRestController {
 		int ret = this.yahooServiceFacade.updateAuctionItem(yahooAuctionItemId, markId);
 		r.setCode(ret);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Access-Control-Allow-Origin: ", "");
+		headers.add("Access-Control-Allow-Origin", "*");
+		headers.add("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+		headers.add("Access-Control-Max-Age", "3600");
+		headers.add("Access-Control-Allow-Headers", "x-requested-with");
 //		headers..setLocation(uriComponentsBuilder.path("/hoges/{id}").buildAndExpand(store.size()).toUri());
 		return new ResponseEntity<Result>(r, headers, HttpStatus.CREATED);
 	}
