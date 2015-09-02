@@ -4,5 +4,7 @@ import java.io.IOException;
 
 public interface YahooServiceFacade {
 	public void registerAuctionItems() throws IOException;
+	
+	public int updateAuctionItem(Integer yahooAuctionItemId,Integer markId);
 
 }

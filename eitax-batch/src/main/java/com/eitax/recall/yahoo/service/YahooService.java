@@ -8,5 +8,6 @@ public interface YahooService {
 	public abstract void registerItems(JSONObject item,Integer recallId,String itemJson);
     public abstract YahooApiCall registerYahooApiCallAndFindYahooApi();
 	public abstract void updateApiCallCount(Integer yahooApiCallId,Integer cnt);
+	public abstract int updateAuctionItemMarkId(Integer yahooAuctionItemId,Integer markId);
 
 }

@@ -81,4 +81,10 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 
 	}
 
+	@Override
+	public int updateAuctionItem(Integer yahooAuctionItemId,Integer markId) {
+		// TODO Auto-generated method stub
+		return this.yahooService.updateAuctionItemMarkId(yahooAuctionItemId, markId);
+	}
+
 }

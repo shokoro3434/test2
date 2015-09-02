@@ -90,5 +90,11 @@ public class YahooServiceImpl implements YahooService {
 	public void updateApiCallCount(Integer yahooApiCallId, Integer cnt) {
 		yahooApiCallDAO.updateCallCount(yahooApiCallId, cnt);
 	}
+	@Override
+	@Transactional
+	public int updateAuctionItemMarkId(Integer yahooAuctionItemId, Integer markId) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemDAO.updateMarkId(yahooAuctionItemId, markId);
+	}
 
 }
