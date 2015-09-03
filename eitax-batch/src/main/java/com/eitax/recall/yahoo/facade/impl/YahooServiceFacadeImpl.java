@@ -51,7 +51,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
 				++call;
 				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
-					if (6 <= i) {
+					if (10 <= i) {
 						break;
 					}
 
