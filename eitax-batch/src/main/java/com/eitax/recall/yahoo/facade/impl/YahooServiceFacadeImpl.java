@@ -95,13 +95,13 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		return this.yahooService.updateAuctionItemMarkId(yahooAuctionItemId, markId);
 	}
 
-	private void send(String messgae) {
+	private void send(String message) {
 		SimpleMailMessage smm = new SimpleMailMessage();
 		smm.setTo("nonamennm03@gmail.com");
 		smm.setReplyTo("pf437283@yj9.so-net.ne.jp");
 		smm.setFrom("pf437283@yj9.so-net.ne.jp");
 		smm.setSubject("Lorem ipsum");
-		smm.setText("Lorem ipsum dolor sit amet [...]日本語");
+		smm.setText(message);
 		javaMailSender.send(smm);
 		
 
