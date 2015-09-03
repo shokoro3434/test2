@@ -61,7 +61,15 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 					++ call;
 					JSONObject root = JSONObject.fromObject(json);
 					JSONObject resultSet = root.getJSONObject("ResultSet");
-					JSONArray itemArray = resultSet.getJSONObject("Result").getJSONArray("Item");
+					Object result = resultSet.get("Result");
+					
+					JSONArray itemArray = null;
+					if (result instanceof JSONArray){
+						itemArray = ((JSONObject)resultSet.getJSONArray("Result").get(0)).getJSONArray("Item");
+					}
+					else{
+						itemArray = resultSet.getJSONObject("Result").getJSONArray("Item");
+					}
 
 					for (int j = 0; j < itemArray.size(); j++) {
 						JSONObject item = itemArray.getJSONObject(j);
