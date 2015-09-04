@@ -83,7 +83,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		} catch (IOException e) {
 			e.printStackTrace();
 			log.error("error : ", e);
-			send(json);
+			send(e.getMessage(),json != null ? json : "test");
 			throw e;
 		}
 
@@ -95,13 +95,13 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		return this.yahooService.updateAuctionItemMarkId(yahooAuctionItemId, markId);
 	}
 
-	private void send(String message) {
+	private void send(String subject,String message) {
 		SimpleMailMessage smm = new SimpleMailMessage();
 		smm.setTo("nonamennm03@gmail.com");
 		smm.setReplyTo("pf437283@yj9.so-net.ne.jp");
 		smm.setFrom("pf437283@yj9.so-net.ne.jp");
-		smm.setSubject("Lorem ipsum");
-		smm.setText(message);
+		smm.setSubject(subject);
+		smm.setText(message); 
 		javaMailSender.send(smm);
 		
 
