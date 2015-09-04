@@ -25,5 +25,11 @@ public class RecallDAOImpl implements RecallDAO{
     public  List<Recall> findByEbayFlag(Integer ebayFlag){
     	return recallRepository.findByEbayFlag(ebayFlag);
     }
+
+	@Override
+	public int updateYahooPageCntByRecallId(Integer recallId, Integer yahooAuctionPageCnt) {
+		// TODO Auto-generated method stub
+		return recallRepository.updateYahooAuctionPageCntByRecallId(yahooAuctionPageCnt,recallId);
+	}
     
 }

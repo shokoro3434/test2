@@ -2,6 +2,8 @@ package com.eitax.recall.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,10 @@ public class SharedServiceImpl implements SharedService{
     }
     public List<Recall> findRecallByEbayFlag(Integer ebayFlag){
     	return recallDAO.findByEbayFlag(ebayFlag);
+    }
+    @Transactional
+    public int updateYahooPageCntByRecallId(Integer recallId,Integer yahooAuctionPageCnt){
+    	return recallDAO.updateYahooPageCntByRecallId(recallId,yahooAuctionPageCnt);
     }
 
 }

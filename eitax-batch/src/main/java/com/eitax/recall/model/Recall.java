@@ -1,5 +1,7 @@
 package com.eitax.recall.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,4 +33,10 @@ public class Recall {
 	private Integer delFlag;
     @Column(name = "ebay_flag")
 	private Integer ebayFlag;
+    @Column(name = "UPDATED")
+	private Date updated;
+    @Column(name = "YAHOO_AUCTION_PAGE_CNT")
+	private Integer yahooAuctionPageCnt;
+    
+    
 }
