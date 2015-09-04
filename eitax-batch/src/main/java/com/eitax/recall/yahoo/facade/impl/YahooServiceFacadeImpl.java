@@ -40,9 +40,11 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		// TODO Auto-generated method stub
 		int call = 0;
 		String json = null;
+		String appid = null;
 		try {
 			YahooApiCall yac = yahooService.registerYahooApiCallAndFindYahooApi();
 			YahooApi aa = yac.getYahooApi();
+			appid = aa.getAppid();
 			List<Recall> recalls = sharedService.findRecallByDelFlag(0);
 			for (Recall recall : recalls) {
 				log.info(recall.getRecallName());
@@ -83,7 +85,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		} catch (IOException e) {
 			e.printStackTrace();
 			log.error("error : ", e);
-			send(e.getMessage(),json != null ? json : "test");
+			send(appid+":"+e.getMessage(),json != null ? json : "test");
 			throw e;
 		}
 
