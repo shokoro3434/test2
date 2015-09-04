@@ -8,5 +8,5 @@ public interface SharedService {
     public abstract List<Recall> findRecallAll();
     public abstract List<Recall> findRecallByDelFlag(Integer delFlag);
     public abstract List<Recall> findRecallByEbayFlag(Integer ebayFlag);
-
+    public abstract int updateYahooPageCntByRecallId(Integer recallId,Integer yahooAuctionPageCnt);
 }
