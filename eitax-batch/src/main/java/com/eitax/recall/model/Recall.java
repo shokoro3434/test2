@@ -37,6 +37,8 @@ public class Recall {
 	private Date updated;
     @Column(name = "YAHOO_AUCTION_PAGE_CNT")
 	private Integer yahooAuctionPageCnt;
+    @Column(name = "YAHOO_AUCTION_AVAILABLE_CNT")
+	private Integer yahooAuctionAvailableCnt;
     
     
 }

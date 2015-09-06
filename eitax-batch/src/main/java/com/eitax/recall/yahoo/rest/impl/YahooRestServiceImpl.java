@@ -89,9 +89,10 @@ public class YahooRestServiceImpl implements YahooRestService {
 		JSONObject root = JSONObject.fromObject(json);
 		JSONObject resultSet = root.getJSONObject("ResultSet");
 		JSONObject attributes = resultSet.getJSONObject("@attributes");
-		Long available = attributes.getLong("totalResultsAvailable");
-		int p = (int) Long.divideUnsigned(available, 20);
-		return p;
+		Long totalResultsAvailable = attributes.getLong("totalResultsAvailable");
+		return totalResultsAvailable.intValue();
+//		int p = (int) Long.divideUnsigned(available, 20);
+//		return p;
 	}
 	private String perform(String urlAsString, int delay,String userAgent,int timeout) throws IOException {
 		HttpURLConnection con = null;

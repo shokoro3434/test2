@@ -27,8 +27,8 @@ public class SharedServiceImpl implements SharedService{
     	return recallDAO.findByEbayFlag(ebayFlag);
     }
     @Transactional
-    public int updateYahooPageCntByRecallId(Integer recallId,Integer yahooAuctionPageCnt){
-    	return recallDAO.updateYahooPageCntByRecallId(recallId,yahooAuctionPageCnt);
+    public int updateYahooPageCntByRecallId(Integer recallId,Integer available,Integer yahooAuctionPageCnt){
+    	return recallDAO.updateYahooPageCntByRecallId(recallId,available,yahooAuctionPageCnt);
     }
 
 }

@@ -49,9 +49,11 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 			for (Recall recall : recalls) {
 				log.info(recall.getRecallName());
 				final int INITIAL_ITEM_PAGE = 1;
-				int pageCount = yahooRestService.retrieveAuctionSearchCount(aa.getAppid(), recall.getRecallName(),
+				int available = yahooRestService.retrieveAuctionSearchCount(aa.getAppid(), recall.getRecallName(),
 						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
-				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), pageCount);
+				int pageCount = (int) Long.divideUnsigned(available, 20) + 1;
+
+				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available,pageCount);
 				++call;
 				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
 					if (50 <= i) {

@@ -27,9 +27,9 @@ public class RecallDAOImpl implements RecallDAO{
     }
 
 	@Override
-	public int updateYahooPageCntByRecallId(Integer recallId, Integer yahooAuctionPageCnt) {
+	public int updateYahooPageCntByRecallId(Integer recallId,Integer available, Integer yahooAuctionPageCnt) {
 		// TODO Auto-generated method stub
-		return recallRepository.updateYahooAuctionPageCntByRecallId(yahooAuctionPageCnt,recallId);
+		return recallRepository.updateYahooAuctionPageCntByRecallId(available,yahooAuctionPageCnt,recallId);
 	}
     
 }

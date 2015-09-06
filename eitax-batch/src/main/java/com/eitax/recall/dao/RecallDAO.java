@@ -8,6 +8,6 @@ public interface RecallDAO {
     public abstract List<Recall> findAll();
     public abstract List<Recall> findByDelFlag(Integer delFlag);
     public abstract List<Recall> findByEbayFlag(Integer ebayFlag);
-    public abstract int updateYahooPageCntByRecallId(Integer recallId,Integer yahooAuctionPageCnt);
+    public abstract int updateYahooPageCntByRecallId(Integer recallId,Integer available,Integer yahooAuctionPageCnt);
 
 }
