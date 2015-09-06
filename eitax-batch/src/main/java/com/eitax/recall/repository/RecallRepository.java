@@ -14,7 +14,7 @@ public interface RecallRepository extends JpaRepository<Recall, Integer> {
     public List<Recall> findByDelFlag(Integer delFlag);
     public List<Recall> findByEbayFlag(Integer ebayFlag);
     @Modifying
-    @Query(value = "update recall.t_recall set yahoo_aucation_availbable_cnt = :yahoo_aucation_availbable_cnt, :yahoo_auction_page_cnt = :yahoo_auction_page_cnt ,updated = sysdate where recall_id = :recall_id",nativeQuery=true)
-    public abstract int updateYahooAuctionPageCntByRecallId(@Param("yahoo_aucation_availbable_cnt")Integer available,@Param("yahoo_auction_page_cnt")Integer yahooAuctionPageCnt,@Param("recall_id")Integer recallId);
+    @Query(value = "update recall.t_recall set yahoo_aucation_available_cnt = :yahoo_aucation_available_cnt, :yahoo_auction_page_cnt = :yahoo_auction_page_cnt ,updated = sysdate where recall_id = :recall_id",nativeQuery=true)
+    public abstract int updateYahooAuctionPageCntByRecallId(@Param("yahoo_aucation_available_cnt")Integer available,@Param("yahoo_auction_page_cnt")Integer yahooAuctionPageCnt,@Param("recall_id")Integer recallId);
 
 }
