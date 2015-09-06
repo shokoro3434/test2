@@ -134,16 +134,23 @@ public class YahooRestServiceImpl implements YahooRestService {
 				json.append(line);
 			}
 			if (responseCode != HttpURLConnection.HTTP_OK) {
+				if (responseCode == 503){
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					perform(urlAsString,delay,userAgent,timeout);
+				}
 				log.error("HTTPS response code failed: {0},response-json: {1}",new Object[]{String.valueOf(responseCode),json.toString()});
 				throw new IOException("HTTPS response code failed: " + String.valueOf(responseCode));
 			} else {
-				// no error found
-//				String nextPartitionKeyToken = con.getHeaderField("x-ms-continuation-NextPartitionKey");
-//				String nextRowKeyToken = con.getHeaderField("x-ms-continuation-NextRowKey");
 				log.info(json.toString());
 //				LogMF.info(logger, "json: {0}",json.toString());
 //				return createAzureStorageResponse(nextPartitionKeyToken, nextRowKeyToken, json.toString());
 				return json.toString();
+				
 			}
 		} catch (IOException e) {
 			log.error( "IOException occurred: " ,e);
