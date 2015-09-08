@@ -79,7 +79,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						JSONObject item = itemArray.getJSONObject(j);
 						String auctionId = item.getString("AuctionID");
 						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
-						if (yci != null){
+						if (yci == null){
 							log.warn("yci is unavailable :" + auctionId);
 							String itemJson = yahooRestService.invokeAuctionItemSearch(aa.getAppid(), auctionId,
 									aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
