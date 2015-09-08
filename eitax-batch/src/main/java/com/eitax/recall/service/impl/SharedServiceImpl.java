@@ -30,5 +30,6 @@ public class SharedServiceImpl implements SharedService{
     public int updateYahooPageCntByRecallId(Integer recallId,Integer available,Integer yahooAuctionPageCnt){
     	return recallDAO.updateYahooPageCntByRecallId(recallId,available,yahooAuctionPageCnt);
     }
+     
 
 }

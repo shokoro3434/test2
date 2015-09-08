@@ -15,6 +15,7 @@ import com.eitax.recall.service.SharedService;
 import com.eitax.recall.yahoo.facade.YahooServiceFacade;
 import com.eitax.recall.yahoo.model.YahooApi;
 import com.eitax.recall.yahoo.model.YahooApiCall;
+import com.eitax.recall.yahoo.model.YahooAuctionItem;
 import com.eitax.recall.yahoo.rest.YahooRestService;
 import com.eitax.recall.yahoo.service.YahooService;
 
@@ -53,15 +54,15 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
 				int pageCount = (int) Long.divideUnsigned(available, 20) + 1;
 
-				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available,pageCount);
+				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available, pageCount);
 				++call;
 				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
-					if (50 <= i) {
-						break;
-					}
+//					if (50 <= i) {
+//						break;
+//					}
 
-					json = yahooRestService.invokeAuctionSearch(aa.getAppid(), recall.getRecallName(), i,
-							aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
+					json = yahooRestService.invokeAuctionSearch(aa.getAppid(), recall.getRecallName(), i, aa.getDelay(),
+							aa.getUserAgent(), aa.getTimeout());
 					++call;
 					JSONObject root = JSONObject.fromObject(json);
 					JSONObject resultSet = root.getJSONObject("ResultSet");
@@ -77,19 +78,23 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 					for (int j = 0; j < itemArray.size(); j++) {
 						JSONObject item = itemArray.getJSONObject(j);
 						String auctionId = item.getString("AuctionID");
-						String itemJson = yahooRestService.invokeAuctionItemSearch(aa.getAppid(), auctionId,
-								aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
-						++call;
-						yahooService.registerItems(item, recall.getRecallId(), itemJson);
+						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
+						if (yci != null){
+							log.warn("yci is unavailable :" + auctionId);
+							String itemJson = yahooRestService.invokeAuctionItemSearch(aa.getAppid(), auctionId,
+									aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
+							++call;
+							yahooService.registerItems(item, recall.getRecallId(), itemJson);
+						}
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			log.error("error : ", e);
-			send(aa.getAppid()+":"+e.getMessage(),json != null ? json : "test");
+			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
 			throw e;
-		} finally{
+		} finally {
 			yahooService.updateApiCallCount(yac.getYahooApiCallId(), call);
 		}
 
@@ -101,15 +106,14 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		return this.yahooService.updateAuctionItemMarkId(yahooAuctionItemId, markId);
 	}
 
-	private void send(String subject,String message) {
+	private void send(String subject, String message) {
 		SimpleMailMessage smm = new SimpleMailMessage();
 		smm.setTo("nonamennm03@gmail.com");
 		smm.setReplyTo("pf437283@yj9.so-net.ne.jp");
 		smm.setFrom("pf437283@yj9.so-net.ne.jp");
 		smm.setSubject(subject);
-		smm.setText(message); 
+		smm.setText(message);
 		javaMailSender.send(smm);
-		
 
 	}
 

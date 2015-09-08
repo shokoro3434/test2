@@ -97,4 +97,10 @@ public class YahooServiceImpl implements YahooService {
 		return this.yahooAuctionItemDAO.updateMarkId(yahooAuctionItemId, markId);
 	}
 
+	@Override
+	public YahooAuctionItem findByAuctionId(String auctionId) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemDAO.findByAuctionId(auctionId);
+	}
+
 }
