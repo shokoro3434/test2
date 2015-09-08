@@ -86,6 +86,9 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 							++call;
 							yahooService.registerItems(item, recall.getRecallId(), itemJson);
 						}
+						else{
+							log.warn("yci is available : "+auctionId);
+						}
 					}
 				}
 			}
