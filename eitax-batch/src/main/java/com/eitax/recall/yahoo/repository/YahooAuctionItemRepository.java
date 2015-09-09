@@ -21,7 +21,7 @@ public interface YahooAuctionItemRepository extends JpaRepository<YahooAuctionIt
     public abstract List<YahooAuctionItem> findByBidOrBuy(@Param("bidOrBuy")Integer bidOrBuy);
 
     @Modifying
-    @Query(value = "update recall.t_yahoo_auction_item set nitified = :notified ,updated = sysdate where yahoo_auction_item_id = :yahooAuctionItemId",nativeQuery=true)
+    @Query(value = "update recall.t_yahoo_auction_item set notified = :notified ,updated = sysdate where yahoo_auction_item_id = :yahooAuctionItemId",nativeQuery=true)
     public int updateAuctionItemByPK(@Param("notified")Integer notified,@Param("yahooAuctionItemId")Integer yahooAuctionItemId);
 
 }
