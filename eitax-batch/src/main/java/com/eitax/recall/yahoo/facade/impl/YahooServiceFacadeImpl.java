@@ -90,14 +90,14 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						
 						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
 						if (yci == null){
-							log.warn("yci is unavailable :" + auctionId);
+							log.warn("yci is unavailable : "+recall.getRecallName()+":"+auctionId);
 							String itemJson = yahooRestService.invokeAuctionItemSearch(aa.getAppid(), auctionId,
 									aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
 							++call;
 							yahooService.registerItems(item, recall.getRecallId(), itemJson);
 						}
 						else{
-							log.warn("yci is available : "+auctionId);
+//							log.warn("yci is available : "+recall.getRecallName()+":"+auctionId);
 						}
 					}
 				}
