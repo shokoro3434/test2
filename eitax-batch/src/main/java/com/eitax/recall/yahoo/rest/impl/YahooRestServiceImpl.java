@@ -141,10 +141,13 @@ public class YahooRestServiceImpl implements YahooRestService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					perform(urlAsString,delay,userAgent,timeout);
+					log.error("retry occurred");
+					return perform(urlAsString,delay,userAgent,timeout);
 				}
-				log.error("HTTPS response code failed: {0},response-json: {1}",new Object[]{String.valueOf(responseCode),json.toString()});
-				throw new IOException("HTTPS response code failed: " + String.valueOf(responseCode));
+				else{
+					log.error(String.valueOf(responseCode));
+					throw new IOException("HTTPS response code failed: " + String.valueOf(responseCode));
+				}
 			} else {
 				log.info(json.toString());
 //				LogMF.info(logger, "json: {0}",json.toString());
