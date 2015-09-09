@@ -57,7 +57,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available, pageCount);
 				++call;
 				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
-					if (100 <= i) {
+					if (recall.getYahooPageLimit() <= i) {
 						break;
 					}
 

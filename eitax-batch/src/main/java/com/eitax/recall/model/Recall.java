@@ -39,6 +39,8 @@ public class Recall {
 	private Integer yahooAuctionPageCnt;
     @Column(name = "YAHOO_AUCTION_AVAILABLE_CNT")
 	private Integer yahooAuctionAvailableCnt;
+    @Column(name = "YAHOO_PAGE_LIMIT")
+	private Integer yahooPageLimit;
     
     
 }
