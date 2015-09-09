@@ -1,4 +1,4 @@
-package com.eitax.recall.yahoo.job;
+package com.eitax.recall.yahoo.batch;
 
 import java.io.IOException;
 
@@ -12,24 +12,21 @@ import com.eitax.recall.yahoo.facade.YahooServiceFacade;
 
 
 @Component
-public class CronJob {
+public class AckJob {
 	  @Autowired
 	  private YahooServiceFacade yahooServiceFacade;
 	  
-	  private static final Logger log = LoggerFactory.getLogger(CronJob.class);
-	  
-	  @Scheduled(fixedDelay = 90000) 
-	  public void invoke() throws IOException{
+	  private static final Logger log = LoggerFactory.getLogger(AckJob.class);
+
+	  @Scheduled(fixedDelay = 60000) 
+	  public void ack() throws Exception{
 		  try {
-			log.info("READY");
-			yahooServiceFacade.registerAuctionItems();
-			log.info("DONE");
-		} catch (IOException e) {
+			yahooServiceFacade.ack();
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	  }
-
 	
 	
 //	@Autowired
