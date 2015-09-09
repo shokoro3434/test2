@@ -142,7 +142,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 			send(yai.getTitle(),yai.getAuctionItemUrl());
 			this.yahooService.updateAuctionItemByPK(1, yai.getYahooAuctionItemId());
 		}
-		log.warn("DONE");
+		log.warn("DONE:"+list.size());
 	}
 
 }
