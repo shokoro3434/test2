@@ -61,6 +61,9 @@ public class YahooRestServiceImpl implements YahooRestService {
 		sb.append("&");
 		sb.append("ranking=");
 		sb.append("current");
+		sb.append("&");
+		sb.append("f=");
+		sb.append("0x4");
 		String jsonp = this.perform(sb.toString(), delay, userAgent, timeout);
 		return RecallUtils.toJson(jsonp);
 	}
