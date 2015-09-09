@@ -136,11 +136,13 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 
 	}
 	public void ack() throws Exception{
+		log.warn("READY");
 		List<YahooAuctionItem> list = yahooService.findByBidOrBuy(1);
 		for (YahooAuctionItem yai : list){
 			send(yai.getTitle(),yai.getAuctionItemUrl());
 			this.yahooService.updateAuctionItemByPK(1, yai.getYahooAuctionItemId());
 		}
+		log.warn("DONE");
 	}
 
 }
