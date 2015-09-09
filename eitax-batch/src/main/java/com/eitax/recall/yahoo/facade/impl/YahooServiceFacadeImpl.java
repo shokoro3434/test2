@@ -72,7 +72,13 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 					if (result instanceof JSONArray) {
 						itemArray = ((JSONObject) resultSet.getJSONArray("Result").get(0)).getJSONArray("Item");
 					} else {
-						itemArray = resultSet.getJSONObject("Result").getJSONArray("Item");
+						Object tmp = resultSet.getJSONObject("Result").get("Item");
+						if (tmp instanceof JSONArray){
+							itemArray = resultSet.getJSONObject("Result").getJSONArray("Item");
+						}
+						else{
+							itemArray = JSONArray.fromObject((JSONObject)tmp);
+						}
 					}
 
 					for (int j = 0; j < itemArray.size(); j++) {
@@ -92,7 +98,13 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 					}
 				}
 			}
-		} catch (IOException e) {
+		} catch(RuntimeException e){
+			e.printStackTrace();
+			log.error("error : ", e);
+			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
+			throw e;
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 			log.error("error : ", e);
 			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
