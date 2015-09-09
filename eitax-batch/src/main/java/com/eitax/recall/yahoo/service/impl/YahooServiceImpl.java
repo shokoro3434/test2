@@ -103,4 +103,17 @@ public class YahooServiceImpl implements YahooService {
 		return this.yahooAuctionItemDAO.findByAuctionId(auctionId);
 	}
 
+	@Override
+	public List<YahooAuctionItem> findByBidOrBuy(Integer bob) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemDAO.findByBidOrBuy(bob);
+	}
+
+	@Override
+	@Transactional
+	public int updateAuctionItemByPK(Integer notified, Integer yahooAuctionItemId) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemDAO.updateAuctionItemByPK(notified,yahooAuctionItemId);
+	}
+
 }

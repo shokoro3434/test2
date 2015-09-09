@@ -7,4 +7,5 @@ public interface YahooServiceFacade {
 	
 	public int updateAuctionItem(Integer yahooAuctionItemId,Integer markId);
 
+	public void ack() throws Exception;
 }

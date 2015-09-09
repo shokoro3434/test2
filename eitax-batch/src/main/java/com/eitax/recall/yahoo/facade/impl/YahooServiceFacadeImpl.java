@@ -135,5 +135,12 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 		javaMailSender.send(smm);
 
 	}
+	public void ack() throws Exception{
+		List<YahooAuctionItem> list = yahooService.findByBidOrBuy(1);
+		for (YahooAuctionItem yai : list){
+			send(yai.getTitle(),yai.getAuctionItemUrl());
+			this.yahooService.updateAuctionItemByPK(1, yai.getYahooAuctionItemId());
+		}
+	}
 
 }

@@ -26,6 +26,16 @@ public class YahooAuctionItemDAOImpl implements YahooAuctionItemDAO {
 	public int updateMarkId(Integer yahooAuctionItemId, Integer markId) {
 		return this.yahooAuctionItemRepository.updateMarkId(markId, yahooAuctionItemId);
 	}
+	@Override
+	public List<YahooAuctionItem> findByBidOrBuy(Integer bob) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemRepository.findByBidOrBuy(bob);
+	}
+	@Override
+	public int updateAuctionItemByPK(Integer notified, Integer yahooAuctionItemId) {
+		// TODO Auto-generated method stub
+		return this.yahooAuctionItemRepository.updateAuctionItemByPK(notified,yahooAuctionItemId);
+	}
 
 }
 

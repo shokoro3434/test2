@@ -9,4 +9,7 @@ public interface YahooAuctionItemDAO {
 	public abstract int updateMarkId (Integer yahooAuctionItemId,Integer markId);
 	public abstract YahooAuctionItem findByAuctionId (String auctionId);
 	public abstract List<YahooAuctionItem> deleteByAuctionId(String auctionId);
+	public abstract List<YahooAuctionItem> findByBidOrBuy(Integer bob);
+	public abstract int updateAuctionItemByPK(Integer notified, Integer yahooAuctionItemId);
+
 }

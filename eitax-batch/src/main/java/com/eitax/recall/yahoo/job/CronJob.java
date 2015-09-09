@@ -30,6 +30,15 @@ public class CronJob {
 		}
 	  }
 
+	  @Scheduled(fixedDelay = 60000) 
+	  public void ack() throws Exception{
+		  try {
+			yahooServiceFacade.ack();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	  }
 	
 	
 //	@Autowired
