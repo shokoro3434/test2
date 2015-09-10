@@ -1,6 +1,4 @@
-package com.eitan.recall.rest.yahoo.auction.category;
-
-import java.util.List;
+package com.eitax.recall.yahoo.auction.rest.category.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,15 +8,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Result", namespace = "urn:yahoo:jp:auc:categoryTree")
+@XmlRootElement(name = "ChildCategory", namespace = "urn:yahoo:jp:auc:categoryTree")
 @Data
-public class Result {
+public class ChildCategory {
 	@XmlElement(name="CategoryId",namespace="urn:yahoo:jp:auc:categoryTree")
 	private Integer categoryId;
 	@XmlElement(name="CategoryName",namespace="urn:yahoo:jp:auc:categoryTree")
 	private String categoryName;
 	@XmlElement(name="CategoryPath",namespace="urn:yahoo:jp:auc:categoryTree")
 	private String categoryPath;
+	@XmlElement(name="NumOfAuctions",namespace="urn:yahoo:jp:auc:categoryTree")
+	private Integer numOfAuctions;
 	@XmlElement(name="ParentCategoryId",namespace="urn:yahoo:jp:auc:categoryTree")
 	private Integer parentCategoryId;
 	@XmlElement(name="IsLeaf",namespace="urn:yahoo:jp:auc:categoryTree")
@@ -29,8 +29,4 @@ public class Result {
 	private Integer order;
 	@XmlElement(name="IsLink",namespace="urn:yahoo:jp:auc:categoryTree")
 	private Boolean isLink;
-	@XmlElement(name="ChildCategoryNum",namespace="urn:yahoo:jp:auc:categoryTree")
-	private Integer childCategoryNum;
-	@XmlElement(name="ChildCategory",namespace="urn:yahoo:jp:auc:categoryTree")
-	private List<ChildCategory> childCategory;
 }

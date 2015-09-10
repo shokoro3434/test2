@@ -1,4 +1,4 @@
-package com.eitan.recall.rest.yahoo.auction.category;
+package com.eitax.recall.yahoo.auction.rest.category.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

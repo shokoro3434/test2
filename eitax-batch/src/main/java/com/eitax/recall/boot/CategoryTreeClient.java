@@ -20,10 +20,10 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import com.eitan.recall.rest.yahoo.auction.category.ChildCategory;
-import com.eitan.recall.rest.yahoo.auction.category.Result;
-import com.eitan.recall.rest.yahoo.auction.category.ResultSet;
 import com.eitax.recall.dao.impl.RecallDAOImpl;
+import com.eitax.recall.yahoo.auction.rest.category.xsd.ChildCategory;
+import com.eitax.recall.yahoo.auction.rest.category.xsd.Result;
+import com.eitax.recall.yahoo.auction.rest.category.xsd.ResultSet;
 import com.eitax.recall.yahoo.dao.impl.YahooCategoryDAOImpl;
 import com.eitax.recall.yahoo.model.Category;
 

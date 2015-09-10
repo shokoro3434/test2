@@ -21,9 +21,6 @@ import com.eitax.recall.yahoo.rest.search.xsd.ItemType;
 import com.eitax.recall.yahoo.rest.search.xsd.ResultSet;
 import com.eitax.recall.yahoo.service.YahooService;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 @Component
 public class YahooServiceFacadeImpl implements YahooServiceFacade {
 
