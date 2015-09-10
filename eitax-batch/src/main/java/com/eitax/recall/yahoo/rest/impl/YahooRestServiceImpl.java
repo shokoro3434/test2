@@ -36,70 +36,8 @@ public class YahooRestServiceImpl implements YahooRestService {
 		}
 	}
 
-	@Override
-	public String invokeAuctionSearch(String appid, String query, int page, int delay, String userAgent, int timeout)
-			throws IOException {
-		StringBuffer sb = new StringBuffer();
-		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/search");
-		sb.append("?");
-		sb.append("appid=");
-		sb.append(appid);
-		sb.append("&");
-		sb.append("output=json");
-		sb.append("&");
-		sb.append("query=");
-		sb.append(URLEncoder.encode(query, "utf-8"));
-		sb.append("&");
-		sb.append("sort=end");
-		sb.append("&");
-		sb.append("order=a");
-		sb.append("&");
-		sb.append("page=");
-		sb.append(page);
-		sb.append("&");
-		// sb.append("store=");
-		// sb.append(2);
-		sb.append("&");
-		sb.append("ranking=");
-		sb.append("current");
-		sb.append("&");
-		sb.append("f=");
-		sb.append("0x4");
-		String jsonp = this.perform(sb.toString(), delay, userAgent, timeout);
-		return RecallUtils.toJson(jsonp);
-	}
 
-	@Override
-	public String invokeAuctionItemSearch(String appid,String auctionId, int delay, String userAgent, int timeout)
-			throws IOException {
-		StringBuffer sb = new StringBuffer ();
-		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/auctionItem");
-		sb.append("?");
-		sb.append("appid=");
-		sb.append(appid);
-		sb.append("&");
-		sb.append("output=json"); 
-		sb.append("&");
-		sb.append("auctionID=");
-		sb.append(auctionId);
-		String jsonp = this.perform(sb.toString(),delay,userAgent,timeout);
-		return RecallUtils.toJson(jsonp);
-	}
 
-	@Override
-	public int retrieveAuctionSearchCount(String appid, String query, int page, int delay, String userAgent,
-			int timeout) throws IOException {
-		String json = invokeAuctionSearch(appid, query, page, delay, userAgent, timeout);
-		JSONObject root = JSONObject.fromObject(json);
-		JSONObject resultSet = root.getJSONObject("ResultSet");
-		JSONObject attributes = resultSet.getJSONObject("@attributes");
-		Long totalResultsAvailable = attributes.getLong("totalResultsAvailable");
-		return totalResultsAvailable.intValue();
-//		int p = (int) Long.divideUnsigned(available, 20);
-//		return p;
-	}
-	
-	
 	@Override
 	public int retrieveAuctionSearchCount2(String appid, String query, int page, int delay, String userAgent,
 			int timeout) throws IOException {
@@ -221,13 +159,13 @@ public class YahooRestServiceImpl implements YahooRestService {
 			}
 
 			final int responseCode = con.getResponseCode();
-			StringBuffer json = new StringBuffer();
+			StringBuffer resp = new StringBuffer();
 			for (;;) {
 	            String line = br.readLine();
 				if (line == null) {
 					break;
 				}
-				json.append(line);
+				resp.append(line);
 			}
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				if (responseCode == 503){
@@ -245,10 +183,10 @@ public class YahooRestServiceImpl implements YahooRestService {
 					throw new IOException("HTTPS response code failed: " + String.valueOf(responseCode));
 				}
 			} else {
-				log.info(json.toString());
+				log.info(resp.toString());
 //				LogMF.info(logger, "json: {0}",json.toString());
 //				return createAzureStorageResponse(nextPartitionKeyToken, nextRowKeyToken, json.toString());
-				return json.toString();
+				return resp.toString();
 				
 			}
 		} catch (IOException e) {

@@ -39,89 +39,6 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 	private static final Logger log = LoggerFactory.getLogger(YahooServiceFacadeImpl.class);
 
 	@Override
-	public void registerAuctionItems() throws IOException {
-		// TODO Auto-generated method stub
-		int call = 0;
-		String json = null;
-		YahooApiCall yac = null;
-		YahooApi aa = null;
-		try {
-			yac = yahooService.registerYahooApiCallAndFindYahooApi();
-			aa = yac.getYahooApi();
-			List<Recall> recalls = sharedService.findRecallByDelFlag(0);
-			for (Recall recall : recalls) {
-				log.info(recall.getRecallName());
-				final int INITIAL_ITEM_PAGE = 1;
-				int available = yahooRestService.retrieveAuctionSearchCount(aa.getAppid(), recall.getRecallName(),
-						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
-				int pageCount = (int) Long.divideUnsigned(available, 20) + 1;
-
-				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available, pageCount);
-				++call;
-				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
-					if (recall.getYahooPageLimit() <= i) {
-						break;
-					}
-
-					json = yahooRestService.invokeAuctionSearch(aa.getAppid(), recall.getRecallName(), i, aa.getDelay(),
-							aa.getUserAgent(), aa.getTimeout());
-					++call;
-					JSONObject root = JSONObject.fromObject(json);
-					JSONObject resultSet = root.getJSONObject("ResultSet");
-					Object result = resultSet.get("Result");
-
-					JSONArray itemArray = null;
-					if (result instanceof JSONArray) {
-						itemArray = ((JSONObject) resultSet.getJSONArray("Result").get(0)).getJSONArray("Item");
-					} else {
-						Object tmp = resultSet.getJSONObject("Result").get("Item");
-						if (tmp instanceof JSONArray){
-							itemArray = resultSet.getJSONObject("Result").getJSONArray("Item");
-						}
-						else{
-							itemArray = JSONArray.fromObject((JSONObject)tmp);
-						}
-					}
-
-					for (int j = 0; j < itemArray.size(); j++) {
-						JSONObject item = itemArray.getJSONObject(j);
-						if (item.isNullObject()){
-							continue;
-						}
-						String auctionId = item.getString("AuctionID");
-						
-						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
-						if (yci == null){
-							log.warn("yci is unavailable : "+recall.getRecallName()+":"+auctionId);
-							String itemJson = yahooRestService.invokeAuctionItemSearch(aa.getAppid(), auctionId,
-									aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
-							++call;
-							yahooService.registerItems(item, recall.getRecallId(), itemJson);
-						}
-						else{
-//							log.warn("yci is available : "+recall.getRecallName()+":"+auctionId);
-						}
-					}
-				}
-			}
-		} catch(RuntimeException e){
-			e.printStackTrace();
-			log.error("error : ", e);
-			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
-			throw e;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			log.error("error : ", e);
-			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
-			throw e;
-		} finally {
-			yahooService.updateApiCallCount(yac.getYahooApiCallId(), call);
-		}
-
-	}
-
-	@Override
 	public int updateAuctionItem(Integer yahooAuctionItemId, Integer markId) {
 		// TODO Auto-generated method stub
 		return this.yahooService.updateAuctionItemMarkId(yahooAuctionItemId, markId);
@@ -161,7 +78,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 			for (Recall recall : recalls) {
 				log.info(recall.getRecallName());
 				final int INITIAL_ITEM_PAGE = 1;
-				int available = yahooRestService.retrieveAuctionSearchCount(aa.getAppid(), recall.getRecallName(),
+				int available = yahooRestService.retrieveAuctionSearchCount2(aa.getAppid(), recall.getRecallName(),
 						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
 				int pageCount = (int) Long.divideUnsigned(available, 20) + 1;
 				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available, pageCount);

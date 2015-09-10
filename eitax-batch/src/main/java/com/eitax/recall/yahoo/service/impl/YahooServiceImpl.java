@@ -32,37 +32,6 @@ public class YahooServiceImpl implements YahooService {
 	@Autowired
 	private YahooApiDAO yahooApiDAO;
 
-	@Override
-	@Transactional
-	public void registerItems(JSONObject item, Integer recallId,String itemJson) {
-
-		String auctionId = item.getString("AuctionID");
-		yahooAuctionItemDAO.deleteByAuctionId(auctionId);
-
-		JSONObject itemRoot = JSONObject.fromObject(itemJson);
-		int storeFlag = itemRoot.getJSONObject("ResultSet").getJSONObject("Result")
-				.getJSONObject("Option").has("StoreIcon") ? 1 : 0;
-
-		YahooAuctionItem tmp = yahooAuctionItemDAO.findByAuctionId(auctionId);
-
-		YahooAuctionItem yai = new YahooAuctionItem();
-		yai.setTitle(item.getString("Title"));
-		yai.setEndTime(item.getString("EndTime"));
-		yai.setStartTime(itemRoot.getJSONObject("ResultSet").getJSONObject("Result").getString("StartTime"));
-		yai.setCurrentPrice(item.getInt("CurrentPrice"));
-		yai.setAuctionId(item.getString("AuctionID"));
-		yai.setCategoryId(item.getString("CategoryId"));
-		yai.setBidOrBuy(item.has("BidOrBuy") ? item.getInt("BidOrBuy") : 0);
-		yai.setSellerId(item.getJSONObject("Seller").getString("Id"));
-		yai.setAuctionItemUrl(item.getString("AuctionItemUrl"));
-		yai.setRecallId(recallId);
-		yai.setStoreFlag(storeFlag);
-		yai.setBids(item.getInt("Bids"));
-		yai.setMarkId(tmp != null ? tmp.getMarkId() : 2);
-		yai.setAuctionId(auctionId);
-		
-		yahooAuctionItemDAO.save(yai);
-	}
 
 	@Override
 	@Transactional
