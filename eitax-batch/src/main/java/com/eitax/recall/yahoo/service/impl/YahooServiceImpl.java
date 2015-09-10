@@ -135,7 +135,7 @@ public class YahooServiceImpl implements YahooService {
 		yai.setCurrentPrice((int)item.getCurrentPrice());
 		yai.setAuctionId(item.getAuctionID());
 		yai.setCategoryId(detail.getResult().getCategoryID());
-		yai.setBidOrBuy(item.getBidOrBuy().intValue());
+		yai.setBidOrBuy(item.getBidOrBuy() != null ? item.getBidOrBuy().intValue() : 0);
 		yai.setSellerId(item.getSeller().getId());
 		yai.setAuctionItemUrl(item.getAuctionItemUrl());
 		yai.setRecallId(recallId);
