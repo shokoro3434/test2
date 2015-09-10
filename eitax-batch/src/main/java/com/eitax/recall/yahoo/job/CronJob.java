@@ -22,7 +22,7 @@ public class CronJob {
 	  public void invoke() throws IOException{
 		  try {
 			log.info("READY");
-			yahooServiceFacade.registerAuctionItems();
+			yahooServiceFacade.registerAuctionItems2();
 			log.info("DONE");
 		} catch (IOException e) {
 			e.printStackTrace();

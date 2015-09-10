@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.eitan.recall.util.RecallUtils;
 import com.eitax.recall.yahoo.rest.YahooRestService;
+import com.eitax.recall.yahoo.rest.search.xsd.ResultSet;
 
 import net.sf.json.JSONObject;
 
@@ -97,6 +98,98 @@ public class YahooRestServiceImpl implements YahooRestService {
 //		int p = (int) Long.divideUnsigned(available, 20);
 //		return p;
 	}
+	
+	
+	@Override
+	public int retrieveAuctionSearchCount2(String appid, String query, int page, int delay, String userAgent,
+			int timeout) throws IOException {
+		StringBuffer sb = new StringBuffer ();
+		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/search");
+		sb.append("?");
+		sb.append("appid=");
+		sb.append(appid);
+		sb.append("&");
+		sb.append("output=xml"); 
+		sb.append("&");
+		sb.append("query=");
+		sb.append(URLEncoder.encode(query, "utf-8"));
+		sb.append("&");
+		sb.append("sort=end");
+		sb.append("&");
+		sb.append("order=a");
+		sb.append("&");
+		sb.append("page=");
+		sb.append(page);
+		sb.append("&");
+		// sb.append("store=");
+		// sb.append(2);
+		sb.append("&");
+		sb.append("ranking=");
+		sb.append("current");
+		sb.append("&");
+		sb.append("f=");
+		sb.append("0x4");
+		String xml = this.perform(sb.toString(),delay,userAgent,timeout);
+		// TODO Auto-generated method stub
+		
+		ResultSet rs = RecallUtils.unmarshal(xml, ResultSet.class);
+		return rs.getTotalResultsAvailable().intValue();
+	}
+
+	@Override
+	public ResultSet invokeAuctionSearch2(String appid, String query, int page, int delay, String userAgent, int timeout)
+			throws IOException {
+		// TODO Auto-generated method stub
+		StringBuffer sb = new StringBuffer ();
+		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/search");
+		sb.append("?");
+		sb.append("appid=");
+		sb.append(appid);
+		sb.append("&");
+		sb.append("output=xml"); 
+		sb.append("&");
+		sb.append("query=");
+		sb.append(URLEncoder.encode(query, "utf-8"));
+		sb.append("&");
+		sb.append("sort=end");
+		sb.append("&");
+		sb.append("order=a");
+		sb.append("&");
+		sb.append("page=");
+		sb.append(page);
+		sb.append("&");
+		// sb.append("store=");
+		// sb.append(2);
+		sb.append("&");
+		sb.append("ranking=");
+		sb.append("current");
+		sb.append("&");
+		sb.append("f=");
+		sb.append("0x4");
+		String xml = this.perform(sb.toString(),delay,userAgent,timeout);
+		// TODO Auto-generated method stub
+		
+		return RecallUtils.unmarshal(xml, ResultSet.class);
+	}
+
+	@Override
+	public com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet invokeAuctionItemSearch2(String appid, String auctionId, int delay, String userAgent, int timeout)
+			throws IOException {
+		// TODO Auto-generated method stub
+		StringBuffer sb = new StringBuffer ();
+		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/auctionItem");
+		sb.append("?");
+		sb.append("appid=");
+		sb.append(appid);
+		sb.append("&");
+		sb.append("output=xml"); 
+		sb.append("&");
+		sb.append("auctionID=");
+		sb.append(auctionId);
+		String xml = this.perform(sb.toString(),delay,userAgent,timeout);
+		return RecallUtils.unmarshal(xml,com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet.class);
+	}
+
 	private String perform(String urlAsString, int delay,String userAgent,int timeout) throws IOException {
 		HttpURLConnection con = null;
 		BufferedReader br = null;

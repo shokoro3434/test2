@@ -17,6 +17,8 @@ import com.eitax.recall.yahoo.model.YahooApi;
 import com.eitax.recall.yahoo.model.YahooApiCall;
 import com.eitax.recall.yahoo.model.YahooAuctionItem;
 import com.eitax.recall.yahoo.rest.YahooRestService;
+import com.eitax.recall.yahoo.rest.search.xsd.ItemType;
+import com.eitax.recall.yahoo.rest.search.xsd.ResultSet;
 import com.eitax.recall.yahoo.service.YahooService;
 
 import net.sf.json.JSONArray;
@@ -143,6 +145,67 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 			this.yahooService.updateAuctionItemByPK(1, yai.getYahooAuctionItemId());
 		}
 		log.warn("DONE:"+list.size());
+	}
+
+	@Override
+	public void registerAuctionItems2() throws IOException {
+		// TODO Auto-generated method stub
+		int call = 0;
+		String json = null;
+		YahooApiCall yac = null;
+		YahooApi aa = null;
+		try {
+			yac = yahooService.registerYahooApiCallAndFindYahooApi();
+			aa = yac.getYahooApi();
+			List<Recall> recalls = sharedService.findRecallByDelFlag(0);
+			for (Recall recall : recalls) {
+				log.info(recall.getRecallName());
+				final int INITIAL_ITEM_PAGE = 1;
+				int available = yahooRestService.retrieveAuctionSearchCount(aa.getAppid(), recall.getRecallName(),
+						INITIAL_ITEM_PAGE, aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
+				int pageCount = (int) Long.divideUnsigned(available, 20) + 1;
+				sharedService.updateYahooPageCntByRecallId(recall.getRecallId(), available, pageCount);
+				++call;
+				for (int i = INITIAL_ITEM_PAGE; i < pageCount; i++) {
+					if (recall.getYahooPageLimit() <= i) {
+						break;
+					}
+
+					ResultSet rs = yahooRestService.invokeAuctionSearch2(aa.getAppid(), recall.getRecallName(), i, aa.getDelay(),
+							aa.getUserAgent(), aa.getTimeout());
+					++call;
+					for (ItemType it : rs.getResult().getItem()) {
+						String auctionId = it.getAuctionID();
+						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
+						if (yci == null){
+							log.warn("yci is unavailable : "+recall.getRecallName()+":"+auctionId);
+							com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet itemDetail = yahooRestService.invokeAuctionItemSearch2(aa.getAppid(), auctionId,
+								aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
+							++call;
+							yahooService.registerItems2(it, recall.getRecallId(), itemDetail);
+						}
+						else{
+							log.warn("yci is available : "+recall.getRecallName()+":"+auctionId);
+						}
+						
+					}
+				}
+			}
+		} catch(RuntimeException e){
+			e.printStackTrace();
+			log.error("error : ", e);
+			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
+			throw e;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			log.error("error : ", e);
+			send(aa.getAppid() + ":" + e.getMessage(), json != null ? json : "test");
+			throw e;
+		} finally {
+			yahooService.updateApiCallCount(yac.getYahooApiCallId(), call);
+		}
+
 	}
 
 }

@@ -16,6 +16,8 @@ import com.eitax.recall.yahoo.dao.YahooAuctionItemDAO;
 import com.eitax.recall.yahoo.model.YahooApi;
 import com.eitax.recall.yahoo.model.YahooApiCall;
 import com.eitax.recall.yahoo.model.YahooAuctionItem;
+import com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet;
+import com.eitax.recall.yahoo.rest.search.xsd.ItemType;
 import com.eitax.recall.yahoo.service.YahooService;
 
 import net.sf.json.JSONObject;
@@ -114,6 +116,36 @@ public class YahooServiceImpl implements YahooService {
 	public int updateAuctionItemByPK(Integer notified, Integer yahooAuctionItemId) {
 		// TODO Auto-generated method stub
 		return this.yahooAuctionItemDAO.updateAuctionItemByPK(notified,yahooAuctionItemId);
+	}
+
+	@Override
+	public void registerItems2(ItemType item, Integer recallId, ResultSet detail) {
+		// TODO Auto-generated method stub
+		String auctionId = item.getAuctionID();
+		yahooAuctionItemDAO.deleteByAuctionId(auctionId);
+
+		int storeFlag = detail.getResult().getOption().getStoreIcon() != null ? 1 : 0;
+		
+		YahooAuctionItem tmp = yahooAuctionItemDAO.findByAuctionId(auctionId);
+
+		YahooAuctionItem yai = new YahooAuctionItem();
+		yai.setTitle(item.getTitle());
+		yai.setEndTime(item.getEndTime());
+		yai.setStartTime(detail.getResult().getStartTime());
+		yai.setCurrentPrice((int)item.getCurrentPrice());
+		yai.setAuctionId(item.getAuctionID());
+		yai.setCategoryId(detail.getResult().getCategoryID());
+		yai.setBidOrBuy(item.getBidOrBuy().intValue());
+		yai.setSellerId(item.getSeller().getId());
+		yai.setAuctionItemUrl(item.getAuctionItemUrl());
+		yai.setRecallId(recallId);
+		yai.setStoreFlag(storeFlag);
+		yai.setBids(item.getBids().intValue());
+		yai.setMarkId(tmp != null ? tmp.getMarkId() : 2);
+		yai.setAuctionId(auctionId);
+		
+		yahooAuctionItemDAO.save(yai);
+
 	}
 
 }
