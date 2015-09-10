@@ -1,4 +1,4 @@
-package com.eitan.recall.rest.yahoo.shopping;
+package com.eitax.recall.yahoo.shopping.rest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
