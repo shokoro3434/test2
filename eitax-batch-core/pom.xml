@@ -5,7 +5,7 @@
     <artifactId>multi-module</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>eitax-batch-aws</artifactId>
+  <artifactId>eitax-batch-core</artifactId>
 	<build>
 		<!-- <sourceDirectory>src</sourceDirectory> <plugins> <plugin> <artifactId>maven-compiler-plugin</artifactId> 
 			<version>3.1</version> <configuration> <source/> <target/> </configuration> 
@@ -237,5 +237,4 @@
 			<version>2.0.8_5</version>
 		</dependency>
 	</dependencies>
-
 </project>
