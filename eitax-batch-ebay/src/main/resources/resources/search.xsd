@@ -1,0 +1,87 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:yahoo:jp:auc:search" targetNamespace="urn:yahoo:jp:auc:search"
+	elementFormDefault="qualified">
+	<xsd:element name="ResultSet">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Result" type="ResultType" />
+			</xsd:sequence>
+			<xsd:attribute name="totalResultsAvailable" type="xsd:integer" />
+			<xsd:attribute name="totalResultsReturned" type="xsd:integer" />
+			<xsd:attribute name="firstResultPosition" type="xsd:integer" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="ResultType">
+		<xsd:sequence>
+			<xsd:element name="UnitsWord" type="xsd:string"
+				minOccurs="0" maxOccurs="5" />
+			<xsd:element name="Item" type="ItemType" minOccurs="0"
+				maxOccurs="50" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ItemType">
+		<xsd:sequence>
+			<xsd:element name="AuctionID" type="xsd:string" />
+			<xsd:element name="Title" type="xsd:string" />
+			<xsd:element name="Seller" type="SellerType" />
+			<xsd:element name="ItemUrl" type="xsd:anyURI" />
+			<xsd:element name="AuctionItemUrl" type="xsd:anyURI" />
+			<xsd:element name="Image">
+				<xsd:complexType>
+					<xsd:attribute name="width" type="xsd:integer" />
+					<xsd:attribute name="height" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CurrentPrice" type="xsd:double" />
+			<xsd:element name="Bids" type="xsd:integer" />
+			<xsd:element name="EndTime" type="xsd:string" />
+			<xsd:element name="BidOrBuy" type="xsd:double" minOccurs="0" />
+			<xsd:element name="IsReserved" type="xsd:boolean" />
+			<xsd:element name="Option" type="OptionType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SellerType">
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:string" />
+			<xsd:element name="ItemListUrl" type="xsd:anyURI" />
+			<xsd:element name="RatingUrl" type="xsd:anyURI" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OptionType">
+		<xsd:sequence>
+			<xsd:element name="NewIcon" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="StoreIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="CheckIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="PublicIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="FeaturedIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="FreeShippingIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="EscrowIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="NewItemIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="YBankIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="WrappingIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="BuynowIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="EasyPaymentIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="GiftIcon" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="EnglishIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="StarClubIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="PointIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="IsBold" type="xsd:boolean" />
+			<xsd:element name="IsBackGroundColor" type="xsd:boolean" />
+			<xsd:element name="IsOffer" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

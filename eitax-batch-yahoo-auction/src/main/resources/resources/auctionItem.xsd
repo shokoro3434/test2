@@ -1,0 +1,215 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:yahoo:jp:auc:auctionItem" targetNamespace="urn:yahoo:jp:auc:auctionItem"
+	elementFormDefault="qualified">
+	<xsd:element name="ResultSet">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Result" type="ResultType" />
+			</xsd:sequence>
+			<xsd:attribute name="totalResultsAvailable" type="xsd:integer" />
+			<xsd:attribute name="totalResultsReturned" type="xsd:integer" />
+			<xsd:attribute name="firstResultPosition" type="xsd:integer" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="ResultType">
+		<xsd:sequence>
+			<xsd:element name="AuctionID" type="xsd:string" />
+			<xsd:element name="CategoryID" type="xsd:string" />
+			<xsd:element name="CategoryPath" type="xsd:string" />
+			<xsd:element name="Title" type="xsd:string" />
+			<xsd:element name="Seller" type="UserType" />
+			<xsd:element name="AuctionItemUrl" type="xsd:anyURI" />
+			<xsd:element name="Img" type="ImgType" />
+			<xsd:element name="Initprice" type="xsd:double" />
+			<xsd:element name="Price" type="xsd:double" />
+			<xsd:element name="Quantity" type="xsd:positiveInteger" />
+			<xsd:element name="Bids" type="xsd:nonNegativeInteger" />
+			<xsd:element name="HighestBidders" type="HighestBiddersType" />
+			<xsd:element name="YPoint" type="xsd:double" minOccurs="0" />
+			<xsd:element name="ItemStatus" type="ItemStatusType" />
+			<xsd:element name="ItemReturnable" type="ItemReturnableType" />
+			<xsd:element name="StartTime" type="xsd:string" />
+			<xsd:element name="EndTime" type="xsd:string" />
+			<xsd:element name="Bidorbuy" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Reserved" type="xsd:string" minOccurs="0"/>
+<!-- 
+			<xsd:element name="Reserved" type="xsd:string" minOccurs="0">
+				<xsd:complexType></xsd:complexType>
+			</xsd:element>
+-->
+			<xsd:element name="IsBidderRestrictions" type="xsd:boolean" />
+			<xsd:element name="IsEarlyClosing" type="xsd:boolean" />
+			<xsd:element name="IsAutomaticExtension" type="xsd:boolean" />
+			<xsd:element name="IsOffer" type="xsd:boolean" />
+			<xsd:element name="Option" type="OptionType" />
+			<xsd:element name="Description" type="xsd:string" />
+			<xsd:element name="Payment" type="PaymentType" />
+			<xsd:element name="BlindBusiness" type="xsd:string" />
+			<xsd:element name="SevenElevenReceive" type="xsd:string" />
+			<xsd:element name="ChargeForShipping" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Location" type="xsd:string" minOccurs="0" />
+			<xsd:element name="IsWorldwide" type="xsd:boolean" />
+			<xsd:element name="ShipTime" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Shipping" type="ShippingType"
+				minOccurs="0" />
+			<xsd:element name="BaggageInfo" type="BaggageInfoType"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserType">
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:string" />
+			<xsd:element name="Rating" type="RatingType" />
+			<xsd:element name="ItemListURL" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="RatingURL" type="xsd:anyURI"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RatingType">
+		<xsd:sequence>
+			<xsd:element name="Point" type="xsd:integer" minOccurs="0" />
+			<xsd:element name="IsSuspended" type="xsd:boolean" />
+			<xsd:element name="IsDeleted" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="HighestBiddersType">
+		<xsd:sequence>
+			<xsd:element name="Bidder" type="UserType" />
+			<xsd:element name="IsMore" type="xsd:boolean" />
+		</xsd:sequence>
+		<xsd:attribute name="totalHighestBidders" type="xsd:integer" />
+	</xsd:complexType>
+	<xsd:complexType name="ImgType">
+		<xsd:sequence>
+<!-- 			<xsd:element name="Image1" type="xsd:anyURI">-->
+ 			<xsd:element name="Image1">
+				<xsd:complexType>
+					<xsd:attribute name="width" type="xsd:positiveInteger" />
+					<xsd:attribute name="height" type="xsd:positiveInteger" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Image2">
+				<xsd:complexType>
+					<xsd:attribute name="width" type="xsd:positiveInteger" />
+					<xsd:attribute name="height" type="xsd:positiveInteger" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Image3">
+				<xsd:complexType>
+					<xsd:attribute name="width" type="xsd:positiveInteger" />
+					<xsd:attribute name="height" type="xsd:positiveInteger" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ItemStatusType">
+		<xsd:sequence>
+			<xsd:element name="Condition" type="xsd:string" />
+			<xsd:element name="Comment" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ItemReturnableType">
+		<xsd:sequence>
+			<xsd:element name="Allowed" type="xsd:boolean" />
+			<xsd:element name="Comment" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OptionType">
+		<xsd:sequence>
+			<xsd:element name="StoreIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="CheckIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="FeaturedIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="FreeshippingIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="EscrowIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="NewItemIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="GiftIcon" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="WrappingIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="BuynowIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="YBankIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="EasyPaymentIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="EnglishIcon" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="StarClubIcon" type="xsd:anyURI"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentType">
+		<xsd:sequence>
+			<xsd:element name="YBank" type="YBankType" minOccurs="0" />
+			<xsd:element name="EasyPayment" type="EasyPaymentType"
+				minOccurs="0" />
+			<xsd:element name="Bank" type="BankType" minOccurs="0" />
+			<xsd:element name="CashRegistration" minOccurs="0">
+				<xsd:complexType></xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CashOnDelivery" minOccurs="0">
+				<xsd:complexType></xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreditCard" minOccurs="0">
+				<xsd:complexType></xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Loan" minOccurs="0">
+				<xsd:complexType></xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Other" type="OtherType" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="YBankType">
+		<xsd:sequence>
+			<xsd:element name="SafeKeepingPayment" type="xsd:double"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EasyPaymentType">
+		<xsd:sequence>
+			<xsd:element name="SafeKeepingPayment" type="xsd:double"
+				minOccurs="0" />
+			<xsd:element name="IsCreditCard" type="xsd:boolean" />
+			<xsd:element name="IsNetBank" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankType">
+		<xsd:sequence>
+			<xsd:element name="Method" type="xsd:string" />
+		</xsd:sequence>
+		<xsd:attribute name="totalBankMethodAvailable" type="xsd:integer" />
+	</xsd:complexType>
+	<xsd:complexType name="OtherType">
+		<xsd:sequence>
+			<xsd:element name="Method" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="totalOtherMethodAvailable" type="xsd:integer" />
+	</xsd:complexType>
+	<xsd:complexType name="ShippingType">
+		<xsd:sequence>
+			<xsd:element name="Method" type="ShippingMethodType" />
+		</xsd:sequence>
+		<xsd:attribute name="totalShippingMethodAvailable" type="xsd:integer" />
+	</xsd:complexType>
+	<xsd:complexType name="ShippingMethodType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="SinglePrice" type="xsd:double"
+				minOccurs="0" />
+			<xsd:element name="PriceURL" type="xsd:anyURI" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BaggageInfoType">
+		<xsd:sequence>
+			<xsd:element name="Size" type="xsd:string" />
+			<xsd:element name="Weight" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
