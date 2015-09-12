@@ -95,17 +95,19 @@ public class YahooServiceImpl implements YahooService {
 		String auctionId = item.getAuctionID();
 		yahooAuctionItemDAO.deleteByAuctionId(auctionId);
 
-		int storeFlag = detail.getResult().getOption().getStoreIcon() != null ? 1 : 0;
+//		int storeFlag = detail.getResult().getOption().getStoreIcon() != null ? 1 : 0;
+
+		int storeFlag = item.getOption().getStoreIcon() != null ? 1 : 0;
 		
 		YahooAuctionItem tmp = yahooAuctionItemDAO.findByAuctionId(auctionId);
 
 		YahooAuctionItem yai = new YahooAuctionItem();
 		yai.setTitle(item.getTitle());
 		yai.setEndTime(item.getEndTime());
-		yai.setStartTime(detail.getResult().getStartTime());
+//		yai.setStartTime(detail.getResult().getStartTime());
 		yai.setCurrentPrice((int)item.getCurrentPrice());
 		yai.setAuctionId(item.getAuctionID());
-		yai.setCategoryId(detail.getResult().getCategoryID());
+//		yai.setCategoryId(detail.getResult().getCategoryID());
 		yai.setBidOrBuy(item.getBidOrBuy() != null ? item.getBidOrBuy().intValue() : 0);
 		yai.setSellerId(item.getSeller().getId());
 		yai.setAuctionItemUrl(item.getAuctionItemUrl());

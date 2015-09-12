@@ -99,10 +99,10 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						YahooAuctionItem yci = this.yahooService.findByAuctionId(auctionId);
 						if (yci == null){
 							log.warn("yci is unavailable : "+recall.getRecallName()+":"+auctionId);
-							com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet itemDetail = yahooRestService.invokeAuctionItemSearch2(aa.getAppid(), auctionId,
-								aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
-							++call;
-							yahooService.registerItems2(it, recall.getRecallId(), itemDetail);
+//							com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet itemDetail = yahooRestService.invokeAuctionItemSearch2(aa.getAppid(), auctionId,
+//								aa.getDelay(), aa.getUserAgent(), aa.getTimeout());
+//							++call;
+							yahooService.registerItems2(it, recall.getRecallId(), null);
 						}
 						else{
 							log.warn("yci is available : "+recall.getRecallName()+":"+auctionId);
