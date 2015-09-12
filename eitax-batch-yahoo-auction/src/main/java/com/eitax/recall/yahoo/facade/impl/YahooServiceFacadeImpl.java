@@ -88,7 +88,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 					ResultSet rs = yahooRestService.invokeAuctionSearch2(aa.getAppid(), recall.getRecallName(), i, aa.getDelay(),
 							aa.getUserAgent(), aa.getTimeout());
 					if (rs == null){
-						throw new RuntimeException("rs is null : "+rs);
+						continue;
 					}
 					if (rs.getResult() == null){
 						throw new RuntimeException("rs.result is null : "+rs);
