@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 import com.eitax.recall.yahoo.dao.YahooApiCallDAO;
 import com.eitax.recall.yahoo.dao.YahooApiDAO;
 import com.eitax.recall.yahoo.dao.YahooAuctionItemDAO;
+import com.eitax.recall.yahoo.dao.YahooCategoryDAO;
+import com.eitax.recall.yahoo.model.Category;
 import com.eitax.recall.yahoo.model.YahooApi;
 import com.eitax.recall.yahoo.model.YahooApiCall;
 import com.eitax.recall.yahoo.model.YahooAuctionItem;
 import com.eitax.recall.yahoo.rest.auctionItem.xsd.ResultSet;
 import com.eitax.recall.yahoo.rest.search.xsd.ItemType;
 import com.eitax.recall.yahoo.service.YahooService;
-
-import net.sf.json.JSONObject;
 
 @Component
 public class YahooServiceImpl implements YahooService {
@@ -31,6 +31,8 @@ public class YahooServiceImpl implements YahooService {
 	private YahooApiCallDAO yahooApiCallDAO;
 	@Autowired
 	private YahooApiDAO yahooApiDAO;
+	@Autowired
+	private YahooCategoryDAO yahooCategoryDAO;
 
 
 	@Override
@@ -115,6 +117,38 @@ public class YahooServiceImpl implements YahooService {
 		
 		yahooAuctionItemDAO.save(yai);
 
+	}
+
+	@Override
+	public List<Category> findAllCategoryByPath(String path){
+		return this.yahooCategoryDAO.findByPath(path);
+	}
+
+	@Override
+	public void registerItems3(ItemType item,String categoryId) {
+		// TODO Auto-generated method stub
+		String auctionId = item.getAuctionID();
+		yahooAuctionItemDAO.deleteByAuctionId(auctionId);
+
+		YahooAuctionItem yai = new YahooAuctionItem();
+		yai.setTitle(item.getTitle());
+		yai.setEndTime(item.getEndTime());
+//		yai.setStartTime(nulldetail.getResult().getStartTime());
+		yai.setCurrentPrice((int)item.getCurrentPrice());
+		yai.setAuctionId(item.getAuctionID());
+		yai.setCategoryId(categoryId);
+		yai.setBidOrBuy(item.getBidOrBuy() != null ? item.getBidOrBuy().intValue() : 0);
+		yai.setSellerId(item.getSeller().getId());
+		yai.setAuctionItemUrl(item.getAuctionItemUrl());
+//		yai.setRecallId(recallId);
+//		yai.setStoreFlag(storeFlag);
+		yai.setBids(item.getBids().intValue());
+//		yai.setMarkId(tmp != null ? tmp.getMarkId() : 2);
+		yai.setAuctionId(auctionId);
+		yai.setJunkFlag(1);
+		
+		yahooAuctionItemDAO.save(yai);
+		
 	}
 
 }

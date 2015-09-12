@@ -219,7 +219,7 @@ public class YahooRestServiceImpl implements YahooRestService {
 
 	@Override
 	public ResultSet invokeAuctionSearch3(String appid, String query, int page, int delay, String userAgent,
-			int timeout,String categoryId,int aucminBidorbuyPrice,int aucmaxBidorbuyPrice) throws IOException {
+			int timeout,int categoryId,int aucminBidorbuyPrice,int aucmaxBidorbuyPrice) throws IOException {
 		// TODO Auto-generated method stub
 		StringBuffer sb = new StringBuffer ();
 		sb.append("http://auctions.yahooapis.jp/AuctionWebService/V2/search");
@@ -252,6 +252,9 @@ public class YahooRestServiceImpl implements YahooRestService {
 		sb.append("&");
 		sb.append("aucmax_bidorbuy_price=");
 		sb.append(aucmaxBidorbuyPrice);
+		sb.append("&");
+		sb.append("freeshipping=");
+		sb.append("1");
 		sb.append("&");
 		sb.append("f=");
 		sb.append("0x4");

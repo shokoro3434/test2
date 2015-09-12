@@ -1,23 +1,32 @@
 package com.eitax.recall.yahoo.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eitax.recall.yahoo.dao.YahooCategoryDAO;
 import com.eitax.recall.yahoo.model.Category;
 import com.eitax.recall.yahoo.repository.YahooCategoryRepository;
 
 @Component
-public class YahooCategoryDAOImpl {
+public class YahooCategoryDAOImpl implements YahooCategoryDAO{
 	@Autowired
 	private YahooCategoryRepository yahooCategoryRepository;
 	
+	@Transactional
 	public Category save (Category category){
 		return yahooCategoryRepository.save(category);
 	}
+	@Transactional
 	public void deleteByYCategoryId(Integer yCategoryId) {
 		yahooCategoryRepository.deleteByYCategoryId(yCategoryId);
 	}
+	public List<Category> findByPath(String path){
+		return this.yahooCategoryRepository.findByCategoryPathContains(path);
+	}
+
 //	public YahooAuctionItem findByAuctionId (String auctionId){
 //		return yahooAuctionItemRepository.findByAuctionId(auctionId);
 //	}

@@ -14,7 +14,7 @@ public interface YahooRestService {
 	
 	
 	public ResultSet invokeAuctionSearch3(String appid, String query, int page, int delay, String userAgent,
-			int timeout,String categoryId,int aucminBidorbuyPrice,int aucmaxBidorbuyPrice) throws IOException;
+			int timeout,int categoryId,int aucminBidorbuyPrice,int aucmaxBidorbuyPrice) throws IOException;
 
 
 }
