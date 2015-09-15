@@ -18,7 +18,7 @@ public class CronJob {
 	  
 	  private static final Logger log = LoggerFactory.getLogger(CronJob.class);
 	  
-	  @Scheduled(fixedDelay = 90000) 
+	  @Scheduled(fixedDelay = 180000) 
 	  public void invoke() throws IOException{
 		  try {
 			log.info("READY");
