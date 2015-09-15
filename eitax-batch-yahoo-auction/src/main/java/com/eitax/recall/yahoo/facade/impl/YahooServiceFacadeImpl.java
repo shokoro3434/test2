@@ -91,7 +91,7 @@ public class YahooServiceFacadeImpl implements YahooServiceFacade {
 						continue;
 					}
 					if (rs.getResult() == null){
-						throw new RuntimeException("rs.result is null : "+rs);
+						continue;
 					}
 					++call;
 					for (ItemType it : rs.getResult().getItem()) {
