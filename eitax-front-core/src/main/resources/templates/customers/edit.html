@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+ああああああああああ
+<form th:action="@{/cusromers/edit}" th:object="${customerForm}" method="post">
+<dl>
+<dt><input type="text" id="lastName" name="lastName" th:field="*{lastName}"/></dt>
+<dt><input type="text" id="firstName" name="firstName" th:field="*{firstName}"/></dt>
+</dl>
+</form>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+	<title>list</title>
+</head>
+<body>
+<table>
+<tr th:each="customer : ${customers}">
+<td th:text="${customer.customerId}">100</td>
+<td th:text="${customer.firstName}">100</td>
+<td th:text="${customer.lastName}">100</td>
+<td>
+	<form th:action="@{/customers/edit}" method="get">
+		<input type="submit" name="form" value="edit"/>
+		<input type="hidden" name="customerId" th:value="${customer.customerId}"/>
+	</form>
+</td>
+</tr>
+</table>
+</body>
+</html>
+
