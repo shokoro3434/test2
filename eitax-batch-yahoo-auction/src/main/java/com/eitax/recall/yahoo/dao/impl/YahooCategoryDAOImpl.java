@@ -12,7 +12,7 @@ import com.eitax.recall.yahoo.repository.YahooCategoryRepository;
 
 @Component 
 public class YahooCategoryDAOImpl implements YahooCategoryDAO{
-	@Autowired
+	@Autowired 
 	private YahooCategoryRepository yahooCategoryRepository;
 	
 	@Transactional
