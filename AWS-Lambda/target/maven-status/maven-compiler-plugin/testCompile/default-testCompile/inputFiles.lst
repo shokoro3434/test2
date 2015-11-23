@@ -1,0 +1,3 @@
+/home/takahiro/workspace/AWS-Lambda/src/test/java/com/eitax/cloud/aws/lamda/sns/SNSHandlerTest.java
+/home/takahiro/workspace/AWS-Lambda/src/test/java/com/eitax/cloud/aws/lamda/ec2/EC2HandlerTest.java
+/home/takahiro/workspace/AWS-Lambda/src/test/java/com/eitax/cloud/aws/service/impl/EC2ServiceImplTest.java

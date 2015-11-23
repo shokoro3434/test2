@@ -1,0 +1,11 @@
+User Name,Access Key Id,Secret Access Key
+"takahiro2",AKIAJSRCXWU6LN7CGKMQ,jyWiTB2koioldNQpb6Yv/7YDt7a++Vjyw12bjkQC
+
+
+arn:aws:sns:ap-northeast-1:960795461263:topic
+i-3a8c0e9f
+
+aws ec2 start-instances --instance-ids i-3a8c0e9f --region ap-northeast-1
+
+accessKey=AKIAIBCKC7U7KFRUZ3ZA
+secretKey=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
