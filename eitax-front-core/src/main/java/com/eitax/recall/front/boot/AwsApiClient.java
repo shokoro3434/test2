@@ -14,9 +14,8 @@ import com.amazonaws.services.ec2.model.InstanceStatus;
 import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 
 @Component
-public class AwsApiClient implements CommandLineRunner{
+public class AwsApiClient /*implements CommandLineRunner*/{
 
-	@Override
 	public void run(String... arg0) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("Hello CLR");
@@ -37,8 +36,8 @@ public class AwsApiClient implements CommandLineRunner{
             System.out.println(status.getInstanceStatus());
             System.out.println(status.getSystemStatus());
         }
-        TerminateInstancesRequest terminateRequest = new TerminateInstancesRequest(Arrays.asList("i-2fa0068a"));
-        ec2.terminateInstances(terminateRequest);
+        //TerminateInstancesRequest terminateRequest = new TerminateInstancesRequest(Arrays.asList("i-2fa0068a"));
+        //ec2.terminateInstances(terminateRequest);
     }
 
 }

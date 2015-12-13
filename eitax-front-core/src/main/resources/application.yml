@@ -7,3 +7,4 @@ spring:
  
 spring.jpa.show-sql: true
 spring.thymeleaf.cache: false
+security.basic.enabled: false
