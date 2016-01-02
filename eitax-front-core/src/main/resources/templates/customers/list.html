@@ -1,22 +1,541 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="utf-8"/>
-	<title>list</title>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head lang="en">
+<meta charset="UTF-8" />
+<title>dash board</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
+	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" />
+<link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css" />
 </head>
 <body>
-<table>
-<tr th:each="customer : ${customers}">
-<td th:text="${customer.customerId}">100</td>
-<td th:text="${customer.firstName}">100</td>
-<td th:text="${customer.lastName}">100</td>
-<td>
-	<form th:action="@{/customers/edit}" method="get">
-		<input type="submit" name="form" value="edit"/>
-		<input type="hidden" name="customerId" th:value="${customer.customerId}"/>
-	</form>
-</td>
-</tr>
-</table>
+
+
+	<div class="container">
+		<div class="col-sm-12">
+			<span class="col-sm-4">
+
+				<h1>ダッシュボード</h1>
+			</span> <span class="col-sm-offset-10 col-sm-8" style="padding-bottom: 20px">
+				<span sec:authentication="principal.username">duke</span><span
+				sec:authentication="principal.authorities"></span>さんログイン中。<a
+				th:href="@{/logout}" class="btn btn-default btn-xs">ログアウト</a>
+			</span>
+		</div>
+
+		<div class="col-sm-12">
+			<!-- 
+        <form th:action="@{/customers/search}" th:object="${customerForm}" class="form-horizontal" method="post">
+          <legend>検索条件</legend>
+                     <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="exampleSelect">AWSアカウント</label>
+            <div class="col-sm-10">
+            <select class="form-control" id="exampleSelect" name="fselect">
+              <option value=""></option>
+              <option th:each="item : ${selectItems}" th:value="${item.value}" th:text="${item.key}" th:selected="${item.value} == *{fselect}">pulldown</option>
+            </select>
+            <span th:if="${#fields.hasErrors('fselect')}" th:errors="*{fselect}" class="help-block">error!</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="exampleSelect">トリガ</label>
+            <div class="col-sm-10">
+            <select class="form-control" id="exampleSelect" name="fselect">
+              <option value=""></option>
+              <option th:each="item : ${triggerItems}" th:value="${item.value}" th:text="${item.key}" th:selected="${item.value} == *{triggerItemId}">pulldown</option>
+            </select>
+            <span th:if="${#fields.hasErrors('triggerItemId')}" th:errors="*{triggerItemId}" class="help-block">error!</span>
+            </div>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('lastName')}? 'has-error has-feedback'">
+                <label for="lastName" class="col-sm-2 control-label">フリーワード</label>
+
+                <div class="col-sm-10">
+                    <input type="text" id="freeText" name="freeText" th:field="*{freeText}"
+                           class="form-control" value="山田"/>
+                    <span th:if="${#fields.hasErrors('freeText')}" th:errors="*{freeText}"
+                          class="help-block">error!</span>
+                </div>
+            </div>
+            <div th:if="${customerForm.admin} == true" class="form-group">
+            	<span>
+                	<button type="submit" class="col-sm-offset-2 btn btn-primary">検索</button>
+                </span>
+            </div>
+            </fieldset>
+        </form>
+        -->
+       	<div class="col-sm-offset-2 col-sm-10">
+							<button class="btn btn-success"
+								data-toggle="modal" data-target="#reg">ｼﾞｮﾌﾞ登録依頼</button>
+<!-- 			<button type="button" class="col-sm-offset-8 btn btn-primary">ｼﾞｮﾌﾞ登録依頼</button>
+-->
+       	</div>
+
+			<legend>ジョブ一覧</legend>
+			<div class="table-responsive">
+			<table data-classes="table table-striped table-bordered table-condensed table-responsive table-hover" data-pagination="true" data-search="true" data-show-refresh="true" data-toggle="table" data-url="http://localhost:10080/cloud-tool/v1/api/lambda" data-height="299">
+			    <thead>
+			        <tr>
+            			<th data-field="jobName">ジョブ名</th>
+			            <th data-field="triggerName">トリガ</th>
+			            <th data-field="description" data-formatter="descFormatter">&nbsp;</th>
+			        </tr>
+			    </thead>
+			</table>
+			<script>
+				function descFormatter(str,json) {
+					//console.debug(value);
+					console.debug(json);
+					var ret = "";
+					/* <![CDATA[ */ 
+					var ret = "<button class='btn btn-danger' data-target='#static' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>実行</button>";
+					ret += "&nbsp;<button class='btn btn-success' data-target='#modify' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>編集</button>";
+					/*]]>*/
+					return ret;
+				}
+			</script>
+			</div>
+			<div class="table-responsive">
+				<table
+					class="table table-striped table-bordered table-condensed table-responsive table-hover">
+					<tr>
+						<th>ジョブ名</th>
+						<th>トリガ</th>
+						<th>&nbsp;</th>
+					</tr>
+					<tr th:each="lambda : ${lambdaList}">
+						<td th:text="${lambda.jobName}" data-toggle="tooltip"
+							data-placement="top" data-container="body"
+							th:attr="title=${lambda.arn}">description</td>
+						<td th:text="${lambda.triggerName}">triigerName</td>
+						<td>
+							<button class="btn btn-danger"
+								th:attr="data-target='#'+${lambda.modalId},data-arn=${lambda.arn},data-description=${lambda.description}"
+								data-toggle="modal">実行</button>
+							<button class="btn btn-success"
+								th:attr="data-arn=${lambda.arn},data-description=${lambda.description}"
+								data-toggle="modal" data-target="#modify">編集</button>
+							<button class="btn btn-info" th:attr="data-arn=${lambda.arn}">ログ</button>
+						</td>
+					</tr>
+
+
+				</table>
+			</div>
+		</div>
+	</div>
+		<!-- regダイアログ -->
+	<div class="modal fade" id="reg" tabindex="-1" role="dialog"
+		aria-labelledby="regLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h4 class="modal-title">登録依頼ﾀﾞｲｱﾛｸﾞ</h4>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+				    <ul class="nav nav-tabs">
+     					<li class="active"><a href="#tab-ec2" data-toggle="tab">EC2</a></li>
+     					<li><a href="#tab-iam" data-toggle="tab">IAM</a></li>
+     					<li><a href="#tab-rds" data-toggle="tab">RDS</a></li>
+ 				   　</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab-ec2">
+					  		<div>
+					  		  <form class="container-fluid form-horizontal">
+						  		  <div class="form-group">
+									  <label class="control-label col-sm-2" for="jobId">JobId</label>
+									  <div class="col-sm-10">
+										  <input class="form-control input-sm" type="text" id="jobId"
+											name="jobId" placeholder="JobIDを入力。"></input> 
+									  </div>
+								  </div>
+								  <div class="form-group">
+									  <label class="control-label col-sm-2" for="jobId">AWS</label>
+									  <div class="col-sm-10">
+											<select class="form-control selectpicker input-sm" data-width="75px"
+												id="awsName">
+												<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+													th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+									  </div>
+								  </div>
+								  <div class="form-group">
+									<label class="control-label col-sm-2" for="actionName">Action</label>
+									<div class="col-sm-10">
+										<select class="form-control selectpicker input-sm" data-width="75px"
+											id="actionName">
+											<option th:each="key : ${actionNames.keySet()}" th:value="${key}"
+												th:text="${actionNames.get(key)}">pulldown</option>
+										</select>
+									</div>
+								  </div>
+								<div class="form-group">
+									<label class="control-label col-sm-2" for="region">Region</label>
+									<div class="col-sm-10">
+										<select class="form-control selectpicker input-sm" data-width="75px"
+											id="region">
+											<option th:each="key : ${regionNames.keySet()}" th:value="${key}"
+												th:text="${regionNames.get(key)}">pulldown</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+									<div class="col-sm-10">
+										<select class="form-control selectpicker input-sm" data-width="75px"
+											id="triggerName">
+											<option th:each="key : ${triggerNames.keySet()}" th:value="${key}"
+												th:text="${triggerNames.get(key)}">pulldown</option>
+										</select>
+									</div>
+								</div>
+					  		  </form>
+					      </div>
+					  </div>
+					  <div class="tab-pane fade" id="tab-iam">Tab2 Content</div>
+					  <div class="tab-pane fade" id="tab-rds">Tab3 Content</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">登録</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	
+	<!-- EC2照会ダイアログ -->
+	<div class="modal fade" id="static" tabindex="-1" role="dialog"
+		aria-labelledby="staticLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h4 class="modal-title">照会ﾀﾞｲｱﾛｸﾞ</h4>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<ul class="list-unstyled recipient">通信中..
+					</ul>
+					<!-- 
+          <table data-url="http://localhost:10080/cloud-tool/data4.json" data-height="299" data-card-view="true" data-response-handler="responseHandler">
+          -->
+					<!-- 
+          <table id="card" data-height="299" data-card-view="true" data-response-handler="responseHandler">
+		    <thead>
+    		<tr>
+        		<th data-field="instanceId">Name</th>
+        		<th data-field="license">License</th>
+        		<th data-field="description">Description</th>
+        		<th data-field="url">Url</th>
+    		</tr>
+    		</thead>
+		</table>
+
+          <table id="table-javascript"></table>
+		-->
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- 編集ダイアログ -->
+	<div class="modal fade" id="modify" tabindex="-1" role="dialog"
+		aria-labelledby="modifyLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h3 class="modal-title">ジョブ編集</h3>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<form class="container-fluid form-horizontal">
+						<span class="text-danger" id="error"></span>
+						<div class="form-group">
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="jobName">ジョブ名</label>
+								<div class="col-sm-10">
+									<input class="form-control " type="text" id="description"
+										name="description"></input> <input class="form-control"
+										type="hidden" id="arn" name="arn"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="jobId">JobId</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" id="jobId" name="jobId"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="jobId">AWS</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker" data-width="75px"
+										id="awsName">
+										<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+											th:text="${awsNames.get(key)}">pulldown</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="actionName">Action</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker" data-width="75px"
+										id="actionName">
+										<option th:each="key : ${actionNames.keySet()}" th:value="${key}"
+											th:text="${actionNames.get(key)}">pulldown</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="region">Region</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker" data-width="75px"
+										id="region">
+										<option th:each="key : ${regionNames.keySet()}" th:value="${key}"
+											th:text="${regionNames.get(key)}">pulldown</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker" data-width="75px"
+										id="triggerName">
+										<option th:each="key : ${triggerNames.keySet()}" th:value="${key}"
+											th:text="${triggerNames.get(key)}">pulldown</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</form>
+					<!-- 
+          <p class="recipient">通信中..</p>
+          -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">変更を保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 編集ダイアログここまで -->
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" th:inline="javascript" th:src="@{/js/response-handler.js}">
+	</script> 
+	<script type="text/javascript" th:inline="javascript" th:src="@{/js/utils.js}">
+	</script> 
+
 </body>
 </html>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+
+  //modify
+  $(document).ready( function() {
+	  $('#modifyButton').on('click', function() {
+	        $('#modify').modal();
+	      });
+	  $('#modify').on('show.bs.modal', function(event) {
+		  var button = $(event.relatedTarget);
+	  	  var json = button.data('description');
+	  	  var description = stringify(json);
+		  $(this).find('#description').val(description);
+		  $(this).find('#jobId').val(json.jobId);
+	      var arn = button.data('arn');
+		  $(this).find('#arn').val(arn);
+		  console.debug(json.actionName);
+		  $(this).find('#awsName').val(json.awsName);
+		  $(this).find('#actionName').val(json.actionName);
+		  $(this).find('#region').val(json.region);
+		  $(this).find('#triggerName').val(json.triggerName);
+	    });
+	  $('#modify').on('hidden.bs.modal', function () {
+     		$('#modify').find('#error').text("");
+	  });
+	  $('#modify').on('click', '.modal-footer .btn-primary', function(e) {
+		  var description = $('#modify').find('#description').val();
+		  var json = $.parseJSON(description);
+		  var arn = $('#modify').find('#arn').val();
+
+		  var newDescription = stringify(json);
+		  
+		  var sendInfo = {
+		  	arn: arn,
+		  	description:{
+			  	jobId: $('#modify').find('#jobId').val(),
+			  	awsName: $('#modify').find('#awsName').val(),
+			  	actionName: $('#modify').find('#actionName').val(),
+			  	region: $('#modify').find('#region').val(),
+			  	triggerName: $('#modify').find('#triggerName').val(),
+			  	system:{
+			  		modalId: json.system.modalId,
+				  	ec2:{
+				  		profileName: json.system.ec2.profileName,
+				  		region: json.system.ec2.region,
+				  		instanceIds: json.system.ec2.instanceIds
+				  	},
+			  	},
+			  },
+		  };
+		  console.debug(sendInfo);
+	      $.ajax({
+	      	type:"PUT",
+//	        url:"/cloud-tool/v1/api/lambda?description="+newDescription+"&arn="+arn,
+	        url:"/cloud-tool/v1/api/lambda",
+	        data:stringify(sendInfo),
+	        contentType: 'application/json', // リクエストの Content-Type
+	        dataType: "json",           // レスポンスをJSONとしてパースする
+	      }).done(function(data, status, xhr) {
+	          	console.log("done : "+data);
+	           	console.log(data);
+	            $('#modify').modal('hide');
+	        	window.location.href = "http://localhost:10080/cloud-tool/customers";
+	      }).fail(function(xhr, status, error){
+	           	console.log(status);
+	           	console.log(xhr.status);
+	           	console.log(xhr.statusText);
+	           	if (xhr.status == 400){
+	           		//validation failed
+	           		console.log(400);
+	           		console.log(xhr.responseText);
+	           		$('#modify').find('#error').text(xhr.responseText);
+	           	}
+	  	  }).always(function(arg1, status, arg2) {
+	           	console.log("done");
+	  	  });
+	    });
+  });
+
+  //static
+$(document).ready( function() {
+    // JavaScript で表示
+  	$('#staticButton').on('click', function() {
+    	$('#static').modal();
+    });
+    
+    $('#static').on('show.bs.modal', function(event) {
+    	var button = $(event.relatedTarget);
+      	var arn = button.data('arn');
+      	var description = stringify(button.data('description'));
+      	var json2 = button.data('description');
+      	console.debug(json2.system.responseHandler);
+  	  	var modal = $(this)  //モーダルを取得
+	    $.ajax({
+	        type:"GET",                // method = "POST"
+	        url:"/cloud-tool/v1/api/invoke",        // POST送信先のURL
+	        data:{arn:arn,description:description},  // JSONデータ本体
+	        contentType: 'application/json', // リクエストの Content-Type
+	        dataType: "json",           // レスポンスをJSONとしてパースする
+	    }).done(function(json, status, xhr) {
+		       	console.log("success : "+json);
+	        	eval(json2.system.responseHandler+"(modal,json)");
+	    }).fail(function(xhr, status, error){
+    	      	alert("Server Error. Pleasy try again later.");
+	    }).always(function(arg1, status, arg2) {
+        	   	console.log("done");
+	  	});
+    });
+   // ダイアログ表示直後にフォーカスを設定する
+   	$('#static').on('shown.bs.modal', function(event) {
+     	$(this).find('.modal-footer .btn-default').focus();
+   	});
+	$('#static').on('hidden.bs.modal', function () {
+  		$('#static').find('.modal-body .recipient').text("通信中..");
+	});
+   	$('#static').on('click', '.modal-footer .btn-primary', function() {
+   	});
+
+});
+	//exec
+  	$(document).ready( function() {
+  	// JavaScript で表示
+  		$('#execButton').on('click', function() {
+  	    	$('#exec').modal();
+  	    });
+  	    
+  	    $('#exec').on('show.bs.modal', function(event) {
+  	    	var button = $(event.relatedTarget);
+  	      	var arn = button.data('arn');
+  	      	var description = button.data('description');
+  	  	  	var modal = $(this)  //モーダルを取得
+  	    	$.ajax({
+	  	        type:"GET",                // method = "POST"
+	  	        url:"/cloud-tool/v1/api/invoke",        // POST送信先のURL
+	  	        data:{arn:arn,description:description},  // JSONデータ本体
+	  	        contentType: 'application/json', // リクエストの Content-Type
+	  	        dataType: "json"           // レスポンスをJSONとしてパースする
+  	    	}).done(function(json, status, xhr) {
+		       	console.log("success : "+json);
+  	        	console.log(json);
+  	  			modal.find('.modal-body .recipient').text("");
+  	  			modal.find('.modal-body .recipient').append("<li>/</li>");
+  	  			modal.find('.modal-body .recipient').append("<ul class=\"root\">");
+  	  			modal.find('.modal-body .recipient .root').append("<li>result:"+json.message+"</li>");
+  	  			modal.find('.modal-body .recipient .root').append("<li>startDateTime:"+json.startDateTime+"</li>");
+  	  			modal.find('.modal-body .recipient .root').append("<li>endDateTime:"+json.endDateTime+"</li>");
+  	  			modal.find('.modal-body .recipient').append("</ul>");
+  			    //modal.find('.modal-body .recipient').append("<p>status : "+json.DBInstanceStatus+"</p>");
+  	        	console.log("###########");
+  				console.log(json);
+  	    	}).fail(function(xhr, status, error){
+	          	alert("Server Error. Pleasy try again later.");
+  	        }).always(function(arg1, status, arg2) {
+	           	console.log("done");
+  	  	  	});
+    	});
+        // ダイアログ表示直後にフォーカスを設定する
+      	$('#exec').on('shown.bs.modal', function(event) {
+        	$(this).find('.modal-footer .btn-default').focus();
+      	});
+  		$('#exec').on('hidden.bs.modal', function () {
+     		$('#exec').find('.modal-body .recipient').text("通信中..");
+  		});
+      	$('#exec').on('click', '.modal-footer .btn-primary', function() {
+      	});
+
+  	});
+/*]]>*/
+</script>
 
