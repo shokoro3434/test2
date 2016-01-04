@@ -7,4 +7,18 @@ spring:
  
 spring.jpa.show-sql: true
 spring.thymeleaf.cache: false
-security.basic.enabled: false
+server.port: 10080
+
+logging.level.: INFO
+logging.level.root: INFO
+logging.level.ROOT: INFO
+
+#logging:
+#    file: logs/myapp.log
+#    level:
+#        org.springframework.security.ldap.authentication: DEBUG
+#        org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider: DEBUG
+
+server:
+ contextPath: /cloud-tool
+ session-timeout: 9000
