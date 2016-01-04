@@ -102,33 +102,6 @@
 				}
 			</script>
 			</div>
-			<div class="table-responsive">
-				<table
-					class="table table-striped table-bordered table-condensed table-responsive table-hover">
-					<tr>
-						<th>ジョブ名</th>
-						<th>トリガ</th>
-						<th>&nbsp;</th>
-					</tr>
-					<tr th:each="lambda : ${lambdaList}">
-						<td th:text="${lambda.jobName}" data-toggle="tooltip"
-							data-placement="top" data-container="body"
-							th:attr="title=${lambda.arn}">description</td>
-						<td th:text="${lambda.triggerName}">triigerName</td>
-						<td>
-							<button class="btn btn-danger"
-								th:attr="data-target='#'+${lambda.modalId},data-arn=${lambda.arn},data-description=${lambda.description}"
-								data-toggle="modal">実行</button>
-							<button class="btn btn-success"
-								th:attr="data-arn=${lambda.arn},data-description=${lambda.description}"
-								data-toggle="modal" data-target="#modify">編集</button>
-							<button class="btn btn-info" th:attr="data-arn=${lambda.arn}">ログ</button>
-						</td>
-					</tr>
-
-
-				</table>
-			</div>
 		</div>
 	</div>
 		<!-- regダイアログ -->
@@ -152,7 +125,7 @@
  				   　</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-ec2">
-					  		<div>
+					  		<div style="padding-top:10px">
 					  		  <form class="container-fluid form-horizontal">
 						  		  <div class="form-group">
 									  <label class="control-label col-sm-2" for="jobId">JobId</label>
