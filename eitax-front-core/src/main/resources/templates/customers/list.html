@@ -12,99 +12,207 @@
 	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" />
 <link rel="stylesheet"
 	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css" />
+<link href="/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+<link href="/css/bootstrap-timepicker.min.css"
+	th:href="@{/css/bootstrap-timepicker.min.css}" rel="stylesheet" />
 </head>
 <body>
-
-
 	<div class="container">
 		<div class="col-sm-12">
 			<span class="col-sm-4">
 
 				<h1>ダッシュボード</h1>
-			</span> <span class="col-sm-offset-10 col-sm-8" style="padding-bottom: 20px">
-				<span sec:authentication="principal.username">duke</span><span
-				sec:authentication="principal.authorities"></span>さんログイン中。<a
+			</span> <span class="col-sm-offset-9 col-sm-8" style="padding-bottom: 20px">
+				<span sec:authentication="principal.username">duke</span> <!-- <span
+				sec:authentication="principal.authorities"></span>-->さんログイン中。<a
 				th:href="@{/logout}" class="btn btn-default btn-xs">ログアウト</a>
 			</span>
 		</div>
 
 		<div class="col-sm-12">
-			<!-- 
-        <form th:action="@{/customers/search}" th:object="${customerForm}" class="form-horizontal" method="post">
-          <legend>検索条件</legend>
-                     <fieldset>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" for="exampleSelect">AWSアカウント</label>
-            <div class="col-sm-10">
-            <select class="form-control" id="exampleSelect" name="fselect">
-              <option value=""></option>
-              <option th:each="item : ${selectItems}" th:value="${item.value}" th:text="${item.key}" th:selected="${item.value} == *{fselect}">pulldown</option>
-            </select>
-            <span th:if="${#fields.hasErrors('fselect')}" th:errors="*{fselect}" class="help-block">error!</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" for="exampleSelect">トリガ</label>
-            <div class="col-sm-10">
-            <select class="form-control" id="exampleSelect" name="fselect">
-              <option value=""></option>
-              <option th:each="item : ${triggerItems}" th:value="${item.value}" th:text="${item.key}" th:selected="${item.value} == *{triggerItemId}">pulldown</option>
-            </select>
-            <span th:if="${#fields.hasErrors('triggerItemId')}" th:errors="*{triggerItemId}" class="help-block">error!</span>
-            </div>
-            </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('lastName')}? 'has-error has-feedback'">
-                <label for="lastName" class="col-sm-2 control-label">フリーワード</label>
+			<div th:if="${customerForm.admin} == true" class="col-sm-offset-9">
+				<button class="btn btn-primary" data-toggle="modal"
+					data-target="#reg">ｼﾞｮﾌﾞ登録</button>
+				<button class="btn btn-primary" data-toggle="modal"
+					data-target="#request">ｽｹｼﾞｭｰﾙ依頼</button>
+			</div>
 
-                <div class="col-sm-10">
-                    <input type="text" id="freeText" name="freeText" th:field="*{freeText}"
-                           class="form-control" value="山田"/>
-                    <span th:if="${#fields.hasErrors('freeText')}" th:errors="*{freeText}"
-                          class="help-block">error!</span>
+
+			<!-- 
+        <div id="toolbar">
+            <div class="form-inline" role="form">
+				  <div class="form-group" style="padding-left:800px;">
+					  <div>
+							<select class="form-control selectpicker" id="aws">
+								<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+									th:text="${awsNames.get(key)}">pulldown</option>
+							</select>
+					  </div>
+				  </div>
+                <div class="form-group">
+                    <span>Offset: </span>
+                    <input name="offset" class="form-control w70" type="number" value="0"></input>
                 </div>
+                <div class="form-group">
+                    <span>Limit: </span>
+                    <input name="limit" class="form-control w70" type="number" value="5"></input>
+                </div>
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search"></input>
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
             </div>
-            <div th:if="${customerForm.admin} == true" class="form-group">
-            	<span>
-                	<button type="submit" class="col-sm-offset-2 btn btn-primary">検索</button>
-                </span>
-            </div>
-            </fieldset>
-        </form>
-        -->
-       	<div class="col-sm-offset-2 col-sm-10">
-							<button class="btn btn-success"
-								data-toggle="modal" data-target="#reg">ｼﾞｮﾌﾞ登録依頼</button>
-<!-- 			<button type="button" class="col-sm-offset-8 btn btn-primary">ｼﾞｮﾌﾞ登録依頼</button>
+        </div>
 -->
-       	</div>
 
 			<legend>ジョブ一覧</legend>
-			<div class="table-responsive">
-			<table data-classes="table table-striped table-bordered table-condensed table-responsive table-hover" data-pagination="true" data-search="true" data-show-refresh="true" data-toggle="table" data-url="http://localhost:10080/cloud-tool/v1/api/lambda" data-height="299">
-			    <thead>
-			        <tr>
-            			<th data-field="jobName">ジョブ名</th>
-			            <th data-field="triggerName">トリガ</th>
-			            <th data-field="description" data-formatter="descFormatter">&nbsp;</th>
-			        </tr>
-			    </thead>
-			</table>
-			<script>
-				function descFormatter(str,json) {
-					//console.debug(value);
-					console.debug(json);
-					var ret = "";
-					/* <![CDATA[ */ 
-					var ret = "<button class='btn btn-danger' data-target='#static' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>実行</button>";
-					ret += "&nbsp;<button class='btn btn-success' data-target='#modify' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>編集</button>";
-					/*]]>*/
-					return ret;
-				}
-			</script>
+			<div>
+
+				<table id="job-table" data-page-size="10" data-sort-name="jobName"
+					data-sort-order="asc" data-sortable="true"
+					data-classes="table table-condensed table-striped table-bordered table-responsive table-hover"
+					data-pagination="true" data-search="true" data-show-refresh="true"
+					data-toggle="table"
+					data-url="http://localhost:10080/cloud-tool/v1/api/lambda">
+					<thead>
+						<tr>
+							<th data-sortable="true" data-field="jobId">ジョブID</th>
+							<th data-sortable="true" data-field="awsName">アカウント</th>
+							<th data-sortable="true" data-field="actionName">アクション</th>
+							<th data-sortable="true" data-field="triggerName">トリガ</th>
+							<th data-formatter="descFormatter">&nbsp;</th>
+						</tr>
+					</thead>
+				</table>
+				<script th:if='${customerForm.admin} == true'>
+					function descFormatter(str, json) {
+						//console.debug(value);
+						var ret = "";
+						/* <![CDATA[ */
+						var ret = "<button class='btn btn-danger btn-xs' data-target='#"+json.modalId+"' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>実行</button>";
+						ret += "&nbsp;<button  class='btn btn-success btn-xs' data-target='#"+json.modModalId+"' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>編集</button>";
+						ret += "&nbsp;<button  class='btn btn-warning btn-xs' onclick=\"removeJob('"
+								+ json.arn + "')\";>削除</button>";
+						/*]]>*/
+						return ret;
+					}
+				</script>
+				<script th:if='${customerForm.admin} == false'>
+					function descFormatter(str, json) {
+						//console.debug(value);
+						var ret = "";
+						/* <![CDATA[ */
+						var ret = "<button class='btn btn-danger btn-xs' data-target='#"+json.modalId+"' data-toggle='modal' data-arn='"+json.arn+"' data-description='"+json.description+"'>実行</button>";
+						/*]]>*/
+						return ret;
+					}
+				</script>
 			</div>
 		</div>
 	</div>
-		<!-- regダイアログ -->
+	<div class="modal fade" id="exec" tabindex="-1" role="dialog"
+		aria-labelledby="exec" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h4 class="modal-title">実行ﾀﾞｲｱﾛｸﾞ</h4>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<div id="loading">
+						<img src="/cloud-tool/assets/ajax-loader.gif" height="30"
+							width="30" alt=""></img>
+					</div>
+					<ul class="list-unstyled recipient"></ul>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- request dialog -->
+	<div class="modal fade" id="request" tabindex="-1" role="dialog"
+		aria-labelledby="requestLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h3 class="modal-title">ｽｹｼﾞｭｰﾙ依頼</h3>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<form class="container-fluid form-horizontal">
+						<span style="padding-bottom: 5px" class="text-danger" id="error"></span>
+						<input class="form-control" type="hidden" id="description"
+							value="description"></input> <input class="form-control"
+							type="hidden" id="arn" name="arn"></input>
+						<div class="form-group">
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="jobId">JobId</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker" data-width="75px"
+										id="jobId">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="jobId">Time</label>
+								<div class="col-sm-10">
+									<div class="input-group bootstrap-timepicker timepicker">
+										<input id="time" type="text" class="form-control input-small"></input>
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-time"></i></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="cronType">Type</label>
+								<div class="col-sm-10">
+									<select class="form-control selectpicker input-xs"
+										data-width="75px" id="cronType">
+										<option th:each="key : ${cronTypes.keySet()}"
+											th:value="${key}" th:text="${cronTypes.get(key)}">pulldown</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="note">Note</label>
+								<div class="col-sm-10">
+									<input class="form-control input-xs" type="text" id="note"
+										name="note" placeholder="詳細入力"></input>
+								</div>
+							</div>
+						</div>
+					</form>
+					<!-- 
+          <p class="recipient">通信中..</p>
+          -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">登録</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- regダイアログ -->
 	<div class="modal fade" id="reg" tabindex="-1" role="dialog"
 		aria-labelledby="regLabel" aria-hidden="true" data-show="true"
 		data-keyboard="false" data-backdrop="static">
@@ -114,71 +222,377 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
 					</button>
-					<h4 class="modal-title">登録依頼ﾀﾞｲｱﾛｸﾞ</h4>
+					<h3 class="modal-title">ｼﾞｮﾌﾞ登録</h3>
 				</div>
 				<!-- /modal-header -->
 				<div class="modal-body">
-				    <ul class="nav nav-tabs">
-     					<li class="active"><a href="#tab-ec2" data-toggle="tab">EC2</a></li>
-     					<li><a href="#tab-iam" data-toggle="tab">IAM</a></li>
-     					<li><a href="#tab-rds" data-toggle="tab">RDS</a></li>
- 				   　</ul>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-ec2" data-toggle="tab">EC2</a></li>
+						<li><a href="#tab-ebs" data-toggle="tab">EBS</a></li>
+						<li><a href="#tab-elb" data-toggle="tab">ELB</a></li>
+						<li><a href="#tab-sg" data-toggle="tab">SG</a></li>
+						<li><a href="#tab-rds" data-toggle="tab">RDS</a></li>
+					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-ec2">
-					  		<div style="padding-top:10px">
-					  		  <form class="container-fluid form-horizontal">
-						  		  <div class="form-group">
-									  <label class="control-label col-sm-2" for="jobId">JobId</label>
-									  <div class="col-sm-10">
-										  <input class="form-control input-sm" type="text" id="jobId"
-											name="jobId" placeholder="JobIDを入力。"></input> 
-									  </div>
-								  </div>
-								  <div class="form-group">
-									  <label class="control-label col-sm-2" for="jobId">AWS</label>
-									  <div class="col-sm-10">
-											<select class="form-control selectpicker input-sm" data-width="75px"
-												id="awsName">
-												<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
-													th:text="${awsNames.get(key)}">pulldown</option>
+							<div style="padding-top: 10px">
+								<form class="container-fluid form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="jobId">JobId</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="jobId"
+												name="jobId" placeholder="JobIdを入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="triggerName">
+												<option th:each="key : ${triggerNames.keySet()}"
+													th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
 											</select>
-									  </div>
-								  </div>
-								  <div class="form-group">
-									<label class="control-label col-sm-2" for="actionName">Action</label>
-									<div class="col-sm-10">
-										<select class="form-control selectpicker input-sm" data-width="75px"
-											id="actionName">
-											<option th:each="key : ${actionNames.keySet()}" th:value="${key}"
-												th:text="${actionNames.get(key)}">pulldown</option>
-										</select>
+										</div>
 									</div>
-								  </div>
-								<div class="form-group">
-									<label class="control-label col-sm-2" for="region">Region</label>
-									<div class="col-sm-10">
-										<select class="form-control selectpicker input-sm" data-width="75px"
-											id="region">
-											<option th:each="key : ${regionNames.keySet()}" th:value="${key}"
-												th:text="${regionNames.get(key)}">pulldown</option>
-										</select>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="actionName">Action</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="actionName">
+												<option th:each="key : ${actionNames_ec2.keySet()}"
+													th:value="${key}" th:text="${actionNames_ec2.get(key)}">pulldown</option>
+											</select>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label col-sm-2" for="triggerName">Trigger</label>
-									<div class="col-sm-10">
-										<select class="form-control selectpicker input-sm" data-width="75px"
-											id="triggerName">
-											<option th:each="key : ${triggerNames.keySet()}" th:value="${key}"
-												th:text="${triggerNames.get(key)}">pulldown</option>
-										</select>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="awsName">AWS</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="awsName">
+												<option th:each="key : ${awsNames.keySet()}"
+													th:value="${key}" th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+										</div>
 									</div>
-								</div>
-					  		  </form>
-					      </div>
-					  </div>
-					  <div class="tab-pane fade" id="tab-iam">Tab2 Content</div>
-					  <div class="tab-pane fade" id="tab-rds">Tab3 Content</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="region">Region</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="region">
+												<option th:each="key : ${regionNames.keySet()}"
+													th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="instance">instance</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="instance">
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="image">image</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs" id="image">
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="snapshot">snapshot</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="snapshot">
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab-ebs">
+							<div style="padding-top: 10px">
+								<form class="container-fluid form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="jobId">Job名</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="jobId"
+												name="jobId" placeholder="Job名を入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="triggerName">
+												<option th:each="key : ${triggerNames.keySet()}"
+													th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="actionName">Action</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="actionName">
+												<option th:each="key : ${actionNames_ebs.keySet()}"
+													th:value="${key}" th:text="${actionNames_ebs.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="awsName">AWS</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="awsName">
+												<option th:each="key : ${awsNames.keySet()}"
+													th:value="${key}" th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="region">Region</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="region">
+												<option th:each="key : ${regionNames.keySet()}"
+													th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="volume">Volume</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="volume">
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab-elb">
+							<div style="padding-top: 10px">
+								<form class="container-fluid form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="jobId">Job名</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="jobId"
+												name="jobId" placeholder="Job名を入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="triggerName">
+												<option th:each="key : ${triggerNames.keySet()}"
+													th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="actionName">Action</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="actionName">
+												<option th:each="key : ${actionNames_elb.keySet()}"
+													th:value="${key}" th:text="${actionNames_elb.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="awsName">AWS</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="awsName">
+												<option th:each="key : ${awsNames.keySet()}"
+													th:value="${key}" th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="region">Region</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="region">
+												<option th:each="key : ${regionNames.keySet()}"
+													th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="elb">ELB</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs" id="elb">
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="instance">instance</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="instance">
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab-sg">
+							<div style="padding-top: 10px">
+								<form class="container-fluid form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="jobId">Job名</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="jobId"
+												name="jobId" placeholder="Job名を入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="triggerName">
+												<option th:each="key : ${triggerNames.keySet()}"
+													th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="actionName">Action</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="actionName">
+												<option th:each="key : ${actionNames_sg.keySet()}"
+													th:value="${key}" th:text="${actionNames_sg.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="awsName">AWS</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="awsName">
+												<option th:each="key : ${awsNames.keySet()}"
+													th:value="${key}" th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="region">Region</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="region">
+												<option th:each="key : ${regionNames.keySet()}"
+													th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="groupId">SG</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="groupId">
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="ipProtocol">IpProtocol</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="ipProtocol">
+												<option th:each="key : ${ipProtocols.keySet()}"
+													th:value="${key}" th:text="${ipProtocols.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="port">Port</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="port"
+												name="port" placeholder="portを入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="cidr">CIDR</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="cidr"
+												name="cidr" placeholder="CIDRを入力"></input>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab-rds">
+							<div style="padding-top: 10px">
+								<form class="container-fluid form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="jobId">JobId</label>
+										<div class="col-sm-10">
+											<input class="form-control input-xs" type="text" id="jobId"
+												name="jobId" placeholder="JobIdを入力"></input>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="triggerName">
+												<option th:each="key : ${triggerNames.keySet()}"
+													th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="actionName">Action</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="actionName">
+												<option th:each="key : ${actionNames_rds.keySet()}"
+													th:value="${key}" th:text="${actionNames_rds.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="awsName">AWS</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="awsName">
+												<option th:each="key : ${awsNames.keySet()}"
+													th:value="${key}" th:text="${awsNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="region">Region</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												data-width="75px" id="region">
+												<option th:each="key : ${regionNames.keySet()}"
+													th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="instance">instance</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="instance">
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="snapshot">snapshot</label>
+										<div class="col-sm-10">
+											<select class="form-control selectpicker input-xs"
+												id="snapshot">
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -192,7 +606,7 @@
 	</div>
 	<!-- /.modal -->
 
-	
+
 	<!-- EC2照会ダイアログ -->
 	<div class="modal fade" id="static" tabindex="-1" role="dialog"
 		aria-labelledby="staticLabel" aria-hidden="true" data-show="true"
@@ -203,11 +617,16 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
 					</button>
-					<h4 class="modal-title">照会ﾀﾞｲｱﾛｸﾞ</h4>
+					<h3 class="modal-title">照会</h3>
 				</div>
 				<!-- /modal-header -->
 				<div class="modal-body">
-					<ul class="list-unstyled recipient">通信中..
+					<div id="loading">
+						<img src="/cloud-tool/assets/ajax-loader.gif" height="30"
+							width="30" alt=""></img>
+					</div>
+
+					<ul class="list-unstyled recipient">
 					</ul>
 					<!-- 
           <table data-url="http://localhost:10080/cloud-tool/data4.json" data-height="299" data-card-view="true" data-response-handler="responseHandler">
@@ -239,8 +658,8 @@
 	<!-- /.modal -->
 
 	<!-- 編集ダイアログ -->
-	<div class="modal fade" id="modify" tabindex="-1" role="dialog"
-		aria-labelledby="modifyLabel" aria-hidden="true" data-show="true"
+	<div class="modal fade" id="mod-ec2" tabindex="-1" role="dialog"
+		aria-labelledby="mod-ec2Label" aria-hidden="true" data-show="true"
 		data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -253,80 +672,288 @@
 				<!-- /modal-header -->
 				<div class="modal-body">
 					<form class="container-fluid form-horizontal">
-						<span class="text-danger" id="error"></span>
+						<div style="padding-top: 10px">
+							<span style="padding-bottom: 5px" class="text-danger" id="error"></span>
+							<input class="form-control" type="hidden" id="description"
+								value="description"></input> <input class="form-control"
+								type="hidden" id="arn" name="arn"></input>
+						</div>
 						<div class="form-group">
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="jobName">ジョブ名</label>
-								<div class="col-sm-10">
-									<input class="form-control " type="text" id="description"
-										name="description"></input> <input class="form-control"
-										type="hidden" id="arn" name="arn"></input>
-								</div>
+							<label class="control-label col-sm-2" for="jobId">JobId</label>
+							<div class="col-sm-10">
+								<input class="form-control input-xs" type="text" id="jobId"
+									name="jobId" placeholder="JobIdを入力"></input>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="jobId">JobId</label>
-								<div class="col-sm-10">
-									<input class="form-control" type="text" id="jobId" name="jobId"></input>
-								</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="triggerName">
+									<option th:each="key : ${triggerNames.keySet()}"
+										th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+								</select>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="jobId">AWS</label>
-								<div class="col-sm-10">
-									<select class="form-control selectpicker" data-width="75px"
-										id="awsName">
-										<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
-											th:text="${awsNames.get(key)}">pulldown</option>
-									</select>
-								</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="actionName">Action</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="actionName">
+									<option th:each="key : ${actionNames_ec2.keySet()}"
+										th:value="${key}" th:text="${actionNames_ec2.get(key)}">pulldown</option>
+								</select>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="actionName">Action</label>
-								<div class="col-sm-10">
-									<select class="form-control selectpicker" data-width="75px"
-										id="actionName">
-										<option th:each="key : ${actionNames.keySet()}" th:value="${key}"
-											th:text="${actionNames.get(key)}">pulldown</option>
-									</select>
-								</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="awsName">AWS</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="awsName">
+									<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+										th:text="${awsNames.get(key)}">pulldown</option>
+								</select>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="region">Region</label>
-								<div class="col-sm-10">
-									<select class="form-control selectpicker" data-width="75px"
-										id="region">
-										<option th:each="key : ${regionNames.keySet()}" th:value="${key}"
-											th:text="${regionNames.get(key)}">pulldown</option>
-									</select>
-								</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="region">Region</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="region">
+									<option th:each="key : ${regionNames.keySet()}"
+										th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+								</select>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-2" for="triggerName">Trigger</label>
-								<div class="col-sm-10">
-									<select class="form-control selectpicker" data-width="75px"
-										id="triggerName">
-										<option th:each="key : ${triggerNames.keySet()}" th:value="${key}"
-											th:text="${triggerNames.get(key)}">pulldown</option>
-									</select>
-								</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="instance">instance</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="instance">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="image">image</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="image">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="snapshot">snapshot</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="snapshot">
+								</select>
 							</div>
 						</div>
 					</form>
-					<!-- 
-          <p class="recipient">通信中..</p>
-          -->
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary">変更を保存</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
+	<!-- /.modal-content -->
+	<!-- /.modal-dialog -->
 	<!-- /.modal -->
 	<!-- 編集ダイアログここまで -->
+	<!-- 編集ダイアログ -->
+	<div class="modal fade" id="mod-sg" tabindex="-1" role="dialog"
+		aria-labelledby="mod-sgLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h3 class="modal-title">ジョブ編集</h3>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<form class="container-fluid form-horizontal">
+						<div style="padding-top: 10px">
+							<span style="padding-bottom: 5px" class="text-danger" id="error"></span>
+							<input class="form-control" type="hidden" id="description"
+								value="description"></input> <input class="form-control"
+								type="hidden" id="arn" name="arn"></input>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="jobId">Job名</label>
+							<div class="col-sm-10">
+								<input class="form-control input-xs" type="text" id="jobId"
+									name="jobId" placeholder="Job名を入力"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="triggerName">
+									<option th:each="key : ${triggerNames.keySet()}"
+										th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="actionName">Action</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="actionName">
+									<option th:each="key : ${actionNames_sg.keySet()}"
+										th:value="${key}" th:text="${actionNames_sg.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="awsName">AWS</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="awsName">
+									<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+										th:text="${awsNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="region">Region</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="region">
+									<option th:each="key : ${regionNames.keySet()}"
+										th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="groupId">SG</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="groupId">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="ipProtocol">IpProtocol</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="ipProtocol">
+									<option th:each="key : ${ipProtocols.keySet()}"
+										th:value="${key}" th:text="${ipProtocols.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="port">Port</label>
+							<div class="col-sm-10">
+								<input class="form-control input-xs" type="text" id="port"
+									name="port" placeholder="portを入力"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="cidr">CIDR</label>
+							<div class="col-sm-10">
+								<input class="form-control input-xs" type="text" id="cidr"
+									name="cidr" placeholder="CIDRを入力"></input>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">変更を保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 編集ダイアログここまで -->
+	<!-- 編集RDSダイアログ -->
+	<div class="modal fade" id="mod-rds" tabindex="-1" role="dialog"
+		aria-labelledby="mod-rdsLabel" aria-hidden="true" data-show="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+					<h3 class="modal-title">ジョブ編集</h3>
+				</div>
+				<!-- /modal-header -->
+				<div class="modal-body">
+					<form class="container-fluid form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="jobId">JobId</label>
+							<div class="col-sm-10">
+								<input class="form-control input-xs" type="text" id="jobId"
+									name="jobId" placeholder="JobIdを入力"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="triggerName">Trigger</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="triggerName">
+									<option th:each="key : ${triggerNames.keySet()}"
+										th:value="${key}" th:text="${triggerNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="actionName">Action</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="actionName">
+									<option th:each="key : ${actionNames_rds.keySet()}"
+										th:value="${key}" th:text="${actionNames_rds.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="awsName">AWS</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="awsName">
+									<option th:each="key : ${awsNames.keySet()}" th:value="${key}"
+										th:text="${awsNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="region">Region</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs"
+									data-width="75px" id="region">
+									<option th:each="key : ${regionNames.keySet()}"
+										th:value="${key}" th:text="${regionNames.get(key)}">pulldown</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="instance">instance</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="instance">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="snapshot">snapshot</label>
+							<div class="col-sm-10">
+								<select class="form-control selectpicker input-xs" id="snapshot">
+								</select>
+							</div>
+						</div>
+					</form>
 
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">変更を保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
 		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
@@ -335,180 +962,55 @@
 		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
 	<script
 		src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
-	<script type="text/javascript" th:inline="javascript" th:src="@{/js/response-handler.js}">
-	</script> 
-	<script type="text/javascript" th:inline="javascript" th:src="@{/js/utils.js}">
-	</script> 
-
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/response-handler.js}">
+		
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/utils.js}">
+		
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/bootstrap-timepicker.min.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/mod-ec2.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/mod-sg.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/mod-rds.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/reg-ec2.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/reg-ebs.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/reg-rds.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/reg-elb.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/reg-sg.js}">
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/req.js}">
+		
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/rm.js}">
+		
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/static.js}">
+		
+	</script>
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/exec.js}">
+	</script>
 </body>
 </html>
-<script type="text/javascript" th:inline="javascript">
-/*<![CDATA[*/
-
-  //modify
-  $(document).ready( function() {
-	  $('#modifyButton').on('click', function() {
-	        $('#modify').modal();
-	      });
-	  $('#modify').on('show.bs.modal', function(event) {
-		  var button = $(event.relatedTarget);
-	  	  var json = button.data('description');
-	  	  var description = stringify(json);
-		  $(this).find('#description').val(description);
-		  $(this).find('#jobId').val(json.jobId);
-	      var arn = button.data('arn');
-		  $(this).find('#arn').val(arn);
-		  console.debug(json.actionName);
-		  $(this).find('#awsName').val(json.awsName);
-		  $(this).find('#actionName').val(json.actionName);
-		  $(this).find('#region').val(json.region);
-		  $(this).find('#triggerName').val(json.triggerName);
-	    });
-	  $('#modify').on('hidden.bs.modal', function () {
-     		$('#modify').find('#error').text("");
-	  });
-	  $('#modify').on('click', '.modal-footer .btn-primary', function(e) {
-		  var description = $('#modify').find('#description').val();
-		  var json = $.parseJSON(description);
-		  var arn = $('#modify').find('#arn').val();
-
-		  var newDescription = stringify(json);
-		  
-		  var sendInfo = {
-		  	arn: arn,
-		  	description:{
-			  	jobId: $('#modify').find('#jobId').val(),
-			  	awsName: $('#modify').find('#awsName').val(),
-			  	actionName: $('#modify').find('#actionName').val(),
-			  	region: $('#modify').find('#region').val(),
-			  	triggerName: $('#modify').find('#triggerName').val(),
-			  	system:{
-			  		modalId: json.system.modalId,
-				  	ec2:{
-				  		profileName: json.system.ec2.profileName,
-				  		region: json.system.ec2.region,
-				  		instanceIds: json.system.ec2.instanceIds
-				  	},
-			  	},
-			  },
-		  };
-		  console.debug(sendInfo);
-	      $.ajax({
-	      	type:"PUT",
-//	        url:"/cloud-tool/v1/api/lambda?description="+newDescription+"&arn="+arn,
-	        url:"/cloud-tool/v1/api/lambda",
-	        data:stringify(sendInfo),
-	        contentType: 'application/json', // リクエストの Content-Type
-	        dataType: "json",           // レスポンスをJSONとしてパースする
-	      }).done(function(data, status, xhr) {
-	          	console.log("done : "+data);
-	           	console.log(data);
-	            $('#modify').modal('hide');
-	        	window.location.href = "http://localhost:10080/cloud-tool/customers";
-	      }).fail(function(xhr, status, error){
-	           	console.log(status);
-	           	console.log(xhr.status);
-	           	console.log(xhr.statusText);
-	           	if (xhr.status == 400){
-	           		//validation failed
-	           		console.log(400);
-	           		console.log(xhr.responseText);
-	           		$('#modify').find('#error').text(xhr.responseText);
-	           	}
-	  	  }).always(function(arg1, status, arg2) {
-	           	console.log("done");
-	  	  });
-	    });
-  });
-
-  //static
-$(document).ready( function() {
-    // JavaScript で表示
-  	$('#staticButton').on('click', function() {
-    	$('#static').modal();
-    });
-    
-    $('#static').on('show.bs.modal', function(event) {
-    	var button = $(event.relatedTarget);
-      	var arn = button.data('arn');
-      	var description = stringify(button.data('description'));
-      	var json2 = button.data('description');
-      	console.debug(json2.system.responseHandler);
-  	  	var modal = $(this)  //モーダルを取得
-	    $.ajax({
-	        type:"GET",                // method = "POST"
-	        url:"/cloud-tool/v1/api/invoke",        // POST送信先のURL
-	        data:{arn:arn,description:description},  // JSONデータ本体
-	        contentType: 'application/json', // リクエストの Content-Type
-	        dataType: "json",           // レスポンスをJSONとしてパースする
-	    }).done(function(json, status, xhr) {
-		       	console.log("success : "+json);
-	        	eval(json2.system.responseHandler+"(modal,json)");
-	    }).fail(function(xhr, status, error){
-    	      	alert("Server Error. Pleasy try again later.");
-	    }).always(function(arg1, status, arg2) {
-        	   	console.log("done");
-	  	});
-    });
-   // ダイアログ表示直後にフォーカスを設定する
-   	$('#static').on('shown.bs.modal', function(event) {
-     	$(this).find('.modal-footer .btn-default').focus();
-   	});
-	$('#static').on('hidden.bs.modal', function () {
-  		$('#static').find('.modal-body .recipient').text("通信中..");
-	});
-   	$('#static').on('click', '.modal-footer .btn-primary', function() {
-   	});
-
-});
-	//exec
-  	$(document).ready( function() {
-  	// JavaScript で表示
-  		$('#execButton').on('click', function() {
-  	    	$('#exec').modal();
-  	    });
-  	    
-  	    $('#exec').on('show.bs.modal', function(event) {
-  	    	var button = $(event.relatedTarget);
-  	      	var arn = button.data('arn');
-  	      	var description = button.data('description');
-  	  	  	var modal = $(this)  //モーダルを取得
-  	    	$.ajax({
-	  	        type:"GET",                // method = "POST"
-	  	        url:"/cloud-tool/v1/api/invoke",        // POST送信先のURL
-	  	        data:{arn:arn,description:description},  // JSONデータ本体
-	  	        contentType: 'application/json', // リクエストの Content-Type
-	  	        dataType: "json"           // レスポンスをJSONとしてパースする
-  	    	}).done(function(json, status, xhr) {
-		       	console.log("success : "+json);
-  	        	console.log(json);
-  	  			modal.find('.modal-body .recipient').text("");
-  	  			modal.find('.modal-body .recipient').append("<li>/</li>");
-  	  			modal.find('.modal-body .recipient').append("<ul class=\"root\">");
-  	  			modal.find('.modal-body .recipient .root').append("<li>result:"+json.message+"</li>");
-  	  			modal.find('.modal-body .recipient .root').append("<li>startDateTime:"+json.startDateTime+"</li>");
-  	  			modal.find('.modal-body .recipient .root').append("<li>endDateTime:"+json.endDateTime+"</li>");
-  	  			modal.find('.modal-body .recipient').append("</ul>");
-  			    //modal.find('.modal-body .recipient').append("<p>status : "+json.DBInstanceStatus+"</p>");
-  	        	console.log("###########");
-  				console.log(json);
-  	    	}).fail(function(xhr, status, error){
-	          	alert("Server Error. Pleasy try again later.");
-  	        }).always(function(arg1, status, arg2) {
-	           	console.log("done");
-  	  	  	});
-    	});
-        // ダイアログ表示直後にフォーカスを設定する
-      	$('#exec').on('shown.bs.modal', function(event) {
-        	$(this).find('.modal-footer .btn-default').focus();
-      	});
-  		$('#exec').on('hidden.bs.modal', function () {
-     		$('#exec').find('.modal-body .recipient').text("通信中..");
-  		});
-      	$('#exec').on('click', '.modal-footer .btn-primary', function() {
-      	});
-
-  	});
-/*]]>*/
-</script>
-
