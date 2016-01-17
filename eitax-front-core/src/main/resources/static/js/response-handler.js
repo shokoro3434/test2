@@ -44,7 +44,7 @@ var rds_SS= function(modal,json){
 		modal.find('.modal-body .recipient').text("");
 		modal.find('.modal-body .recipient').append("<li>/</li>");
 		modal.find('.modal-body .recipient').append("<ul class=\"root\">");
-		modal.find('.modal-body .recipient .root').append("<li>status:"+json.DBInstanceStatus+"</li>");
+		modal.find('.modal-body .recipient .root').append("<li>status:"+json.status+"</li>");
 		modal.find('.modal-body .recipient .root').append("<li>availabilityZone:"+json.availabilityZone+"</li>");
 		modal.find('.modal-body .recipient').append("</ul>");
 };
