@@ -3,9 +3,11 @@ package com.eitax.recall.front.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.h2.mvstore.cache.CacheLongKeyLIRS.Config;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -24,7 +26,19 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Profile findOne(String profileName) {
-		AmazonDynamoDB client = new AmazonDynamoDBClient(new ClasspathPropertiesFileCredentialsProvider());
+		AmazonDynamoDB client = null;
+		if (System.getProperty("useProxy") != null){
+			ClientConfiguration conf = new ClientConfiguration()
+					.withProxyHost(System.getProperty("proxyHost"))
+					.withProxyPort(Integer.valueOf(System.getProperty("proxyPort")))
+					.withProxyUsername(System.getProperty("proxyUsername"))
+					.withProxyPassword(System.getProperty("proxyPassword"));
+			client = new AmazonDynamoDBClient(new ClasspathPropertiesFileCredentialsProvider(),conf);
+		}
+		else{
+			client = new AmazonDynamoDBClient(new ClasspathPropertiesFileCredentialsProvider());
+		}
+
 		client.setRegion(Region.getRegion(Regions.AP_NORTHEAST_1));
 		client.setEndpoint("https://dynamodb.ap-northeast-1.amazonaws.com");
 		DynamoDBMapper mapper = new DynamoDBMapper(client);

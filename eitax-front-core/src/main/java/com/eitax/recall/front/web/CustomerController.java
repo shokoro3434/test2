@@ -30,8 +30,6 @@ public class CustomerController {
 	@Autowired
 	private ProfileService profileService;
 	@Autowired
-	private LambdaService lambdaService;
-	@Autowired
 	private AWSMasterDataService awsMasterDataService;
 
     @ModelAttribute
@@ -49,8 +47,15 @@ public class CustomerController {
         model.addAttribute("profile", apiProfile);
         model.addAttribute("awsNames", awsMasterDataService.retrieveAwsNames());
         model.addAttribute("actionNames", awsMasterDataService.retrieveActions());
+        model.addAttribute("actionNames_ec2", awsMasterDataService.retrieveActions("ec2-"));
+        model.addAttribute("actionNames_rds", awsMasterDataService.retrieveActions("rds-"));
+        model.addAttribute("actionNames_elb", awsMasterDataService.retrieveActions("elb-"));
+        model.addAttribute("actionNames_sg", awsMasterDataService.retrieveActions("sg_-"));
+        model.addAttribute("actionNames_ebs", awsMasterDataService.retrieveActions("ebs-"));
         model.addAttribute("regionNames", awsMasterDataService.retrieveRegions());
         model.addAttribute("triggerNames", awsMasterDataService.retrieveLambdaTriggers());
+        model.addAttribute("cronTypes", awsMasterDataService.retrieveCronTypes());
+        model.addAttribute("ipProtocols", awsMasterDataService.retrieveIpProtocols());
         CustomerForm form = new CustomerForm ();
         for (GrantedAuthority ga : userDetails.getAuthorities()){
         	String auth = ga.getAuthority();

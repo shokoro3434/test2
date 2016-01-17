@@ -13,4 +13,6 @@ public class EC2 {
 	private String profileName;
 	private String region;
 	private List<String> instanceIds;
+	private String snapshotId;
+	private List<String> imageIds;
 }
