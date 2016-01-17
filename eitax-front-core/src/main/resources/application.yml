@@ -22,3 +22,21 @@ logging.level.ROOT: INFO
 server:
  contextPath: /cloud-tool
  session-timeout: 9000
+ 
+settings:
+ email: nonamennm03@gmail.com
+ subject: 【統合ツール】Jobスケジュール申請
+ cloudDivEmail: nonamennm03@gmail.com
+ template: vm/schedule-request.vm 
+
+settings.notification.invoke:
+ email: nonamennm03@gmail.com
+ subject: 【統合ツール】Job実行完了通知
+ template: vm/exec.vm 
+ 
+settings.lambda:
+ role: arn:aws:iam::960795461263:role/lambda_basic_execution_new
+ ec2Handler: jp.co.ogis.cloudtool.lambda.core.ec2.impl.EC2HandlerImpl
+ rdsHandler: jp.co.ogis.cloudtool.lambda.core.rds.impl.RdsHandlerImpl
+ s3Backet: lambda-backet2
+ s3Key: eitan-lambda-core-0.0.1-SNAPSHOT.jar
