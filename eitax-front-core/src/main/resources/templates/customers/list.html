@@ -215,6 +215,7 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
+	<div th:include="customers/dialogs/ref::static"></div>
 
 	<!-- regダイアログ -->
 	<div class="modal fade" id="reg" tabindex="-1" role="dialog"
@@ -665,55 +666,7 @@
 	<!-- /.modal -->
 
 
-	<!-- EC2照会ダイアログ -->
-	<div class="modal fade" id="static" tabindex="-1" role="dialog"
-		aria-labelledby="staticLabel" aria-hidden="true" data-show="true"
-		data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
-					</button>
-					<h3 class="modal-title">照会</h3>
-				</div>
-				<!-- /modal-header -->
-				<div class="modal-body">
-					<div id="loading">
-						<img src="/cloud-tool/assets/ajax-loader.gif" height="30"
-							width="30" alt=""></img>
-					</div>
 
-					<ul class="list-unstyled recipient">
-					</ul>
-					<!-- 
-          <table data-url="http://localhost:10080/cloud-tool/data4.json" data-height="299" data-card-view="true" data-response-handler="responseHandler">
-          -->
-					<!-- 
-          <table id="card" data-height="299" data-card-view="true" data-response-handler="responseHandler">
-		    <thead>
-    		<tr>
-        		<th data-field="instanceId">Name</th>
-        		<th data-field="license">License</th>
-        		<th data-field="description">Description</th>
-        		<th data-field="url">Url</th>
-    		</tr>
-    		</thead>
-		</table>
-
-          <table id="table-javascript"></table>
-		-->
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
 
 	<!-- 編集ダイアログ -->
 	<div class="modal fade" id="mod-ec2" tabindex="-1" role="dialog"
