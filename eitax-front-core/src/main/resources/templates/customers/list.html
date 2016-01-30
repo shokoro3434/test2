@@ -227,11 +227,30 @@
 				<!-- /modal-header -->
 				<div class="modal-body">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab-ec2" data-toggle="tab">EC2</a></li>
-						<li><a href="#tab-ebs" data-toggle="tab">EBS</a></li>
-						<li><a href="#tab-elb" data-toggle="tab">ELB</a></li>
-						<li><a href="#tab-sg" data-toggle="tab">SG</a></li>
-						<li><a href="#tab-rds" data-toggle="tab">RDS</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<img alt="Brand" src="/cloud-tool/img/aws.jpeg" style="height: 50px;">
+									<span class="caret"></span>
+								</img>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#tab-ec2" data-toggle="tab">EC2</a></li>
+								<li><a href="#tab-ebs" data-toggle="tab">EBS</a></li>
+								<li><a href="#tab-elb" data-toggle="tab">ELB</a></li>
+								<li><a href="#tab-sg" data-toggle="tab">SG</a></li>
+								<li><a href="#tab-rds" data-toggle="tab">RDS</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<img alt="Brand" src="/cloud-tool/img/azure.png" style="height: 50px;">
+									<span class="caret"></span>
+								</img>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#tab-ec2" data-toggle="tab">Virtual Machine</a></li>
+							</ul>
+						</li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-ec2">
